@@ -9,6 +9,13 @@ Public connector-authoring repository for StatuspageOne marketplace integrations
 3. Run `pnpm validate` from this repository.
 4. Open a pull request with only sanitized examples and documentation.
 
+## Documentation
+
+- [Authoring Guide](docs/authoring-guide.md)
+- [Connector Contract](docs/connector-contract.md)
+- [Security And Redaction](docs/security-and-redaction.md)
+- [Review Checklist](docs/review-checklist.md)
+
 ## Repository Layout
 
 - `docs/` contributor documentation and review guidance

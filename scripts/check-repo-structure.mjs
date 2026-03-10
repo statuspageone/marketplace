@@ -25,12 +25,46 @@ const requirePackageScript = (scriptName) => {
   }
 };
 
+const requireFileContains = (relativePath, expectedText, description) => {
+  const fullPath = path.join(repoRoot, relativePath);
+  if (!fs.existsSync(fullPath)) {
+    failures.push(`Missing ${relativePath}`);
+    return;
+  }
+
+  const content = fs.readFileSync(fullPath, "utf8");
+  if (!content.includes(expectedText)) {
+    failures.push(description);
+  }
+};
+
 requirePath("README.md");
 requirePackageScript("validate");
 
 for (const folder of ["docs", "templates", "connectors", "schemas", "scripts"]) {
   requirePath(folder, `top-level folder ${folder}/`);
 }
+
+const requiredDocs = [
+  "docs/authoring-guide.md",
+  "docs/connector-contract.md",
+  "docs/security-and-redaction.md",
+  "docs/review-checklist.md",
+];
+
+for (const docPath of requiredDocs) {
+  requirePath(docPath);
+}
+
+for (const docLink of requiredDocs) {
+  requireFileContains("README.md", docLink, `README.md must link to ${docLink}`);
+}
+
+requireFileContains(
+  "docs/security-and-redaction.md",
+  "Do not include secrets or real customer data.",
+  "security-and-redaction.md must explicitly forbid secrets and real customer data",
+);
 
 if (failures.length > 0) {
   console.error("FAIL");
