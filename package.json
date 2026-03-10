@@ -1,0 +1,10 @@
+{
+  "name": "@statuspageone/marketplace",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.11.0",
+  "scripts": {
+    "validate": "pnpm validate:structure",
+    "validate:structure": "node scripts/check-repo-structure.mjs"
+  }
+}
