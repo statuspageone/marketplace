@@ -26,3 +26,7 @@ Each connector folder must include:
 - Model OAuth declaratively. Include scopes, token URLs, and required environment variable names, but never real credentials.
 - Normalize provider routes into stable internal route names and field shapes.
 - Keep runtime logic, importer code, and any private tenant assumptions out of this repository.
+
+## Template Usage
+
+The starter kit in `templates/connector` is intentionally fake. Replace every `example`, `placeholder`, and `redacted` value before submitting a real connector, but keep the replacements sanitized and public-safe.
