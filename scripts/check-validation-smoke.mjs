@@ -7,6 +7,7 @@ import { spawnSync } from "node:child_process";
 const smokeRoot = path.resolve(import.meta.dirname, "..");
 const validatorScript = path.join(smokeRoot, "scripts", "validate-connectors.mjs");
 const templateRoot = path.join(smokeRoot, "templates", "connector");
+const resendRoot = path.join(smokeRoot, "connectors", "resend");
 
 const writeJson = (filePath, value) => {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -135,6 +136,8 @@ const assertFileContains = (targetPath, expectedText, context) => {
   assert.match(content, new RegExp(expectedText), `${context} should mention ${expectedText}.`);
 };
 
+const readJson = (targetPath) => JSON.parse(fs.readFileSync(targetPath, "utf8"));
+
 const assertSuccess = (result, context) => {
   assert.equal(result.status, 0, `${context} should pass.\n${result.stdout}\n${result.stderr}`);
 };
@@ -223,5 +226,44 @@ fs.cpSync(templateRoot, path.join(templateValidationRoot, "connectors", "templat
   recursive: true,
 });
 assertSuccess(runValidator(templateValidationRoot), "template connector fixture");
+
+const resendRequiredFiles = [
+  "manifest.json",
+  "auth.json",
+  "webhook.json",
+  "polling.json",
+  "mapping.json",
+  "README.md",
+  "fixtures/webhook-event.json",
+  "fixtures/polling-page.json",
+];
+
+for (const relativePath of resendRequiredFiles) {
+  assertPathExists(path.join(resendRoot, relativePath), `resend sample file ${relativePath}`);
+}
+
+assertSuccess(runValidator(smokeRoot), "resend sample connector");
+
+const resendManifest = readJson(path.join(resendRoot, "manifest.json"));
+assert.deepEqual(
+  resendManifest.deliveryModes,
+  ["webhook", "polling"],
+  "resend sample should represent both webhook and polling delivery modes.",
+);
+
+const resendAuth = readJson(path.join(resendRoot, "auth.json"));
+assert.equal(Array.isArray(resendAuth.install?.fields), true, "resend sample should include install config fields.");
+assert.ok(resendAuth.install.fields.length >= 2, "resend sample should include multiple install config fields.");
+
+for (const sanitizedFixture of [
+  path.join(resendRoot, "fixtures", "webhook-event.json"),
+  path.join(resendRoot, "fixtures", "polling-page.json"),
+]) {
+  assertFileContains(
+    sanitizedFixture,
+    "example|redacted|demo",
+    `sanitized resend fixture ${path.basename(sanitizedFixture)}`,
+  );
+}
 
 console.log("PASS");
