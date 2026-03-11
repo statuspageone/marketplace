@@ -1,0 +1,15 @@
+{
+  "slug": "resend",
+  "name": "Resend",
+  "description": "Public sample connector for Resend email event ingestion.",
+  "documentationUrl": "https://resend.com/docs",
+  "deliveryModes": ["webhook", "polling"],
+  "auth": "oauth2",
+  "version": "1.0.0",
+  "files": {
+    "auth": "auth.json",
+    "webhook": "webhook.json",
+    "polling": "polling.json",
+    "mapping": "mapping.json"
+  }
+}

@@ -23,7 +23,7 @@ const secretPattern =
   /(sk_live_|-----BEGIN|AKIA[0-9A-Z]{16}|xox[baprs]-|ghp_[A-Za-z0-9]{20,}|Bearer\s+[A-Za-z0-9._-]+|password|api[_-]?key|client[_-]?secret)/i;
 const envVarPattern = /^[A-Z][A-Z0-9_]*$/;
 
-const canonicalRoutePattern = /^[a-z0-9]+(\.[a-z0-9]+)+$/;
+const canonicalRoutePattern = /^[a-z0-9_]+(\.[a-z0-9_]+)+$/;
 
 const args = process.argv.slice(2);
 let connectorRepoRoot = scriptRoot;
@@ -94,19 +94,21 @@ const validateAgainstSchema = (schema, value, pointer, failures) => {
   }
 };
 
-const walkStrings = (value, visit) => {
+const walkStrings = (value, visit, propertyName = "") => {
   if (typeof value === "string") {
-    visit(value);
+    visit(value, propertyName);
     return;
   }
 
   if (Array.isArray(value)) {
-    value.forEach((item) => walkStrings(item, visit));
+    value.forEach((item) => walkStrings(item, visit, propertyName));
     return;
   }
 
   if (typeof value === "object" && value !== null) {
-    Object.values(value).forEach((item) => walkStrings(item, visit));
+    for (const [nestedKey, item] of Object.entries(value)) {
+      walkStrings(item, visit, nestedKey);
+    }
   }
 };
 
@@ -176,7 +178,11 @@ const validateConnector = (connectorPath, schemas) => {
   });
 
   for (const [fileName, fileValue] of Object.entries(parsedFiles)) {
-    walkStrings(fileValue, (stringValue) => {
+    walkStrings(fileValue, (stringValue, propertyName) => {
+      if (propertyName.toLowerCase().includes("envvar") && envVarPattern.test(stringValue)) {
+        return;
+      }
+
       if (secretPattern.test(stringValue) && !envVarPattern.test(stringValue)) {
         failures.push(`${fileNames[fileName]} contains a secret-like value`);
       }
