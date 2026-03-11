@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 
 const smokeRoot = path.resolve(import.meta.dirname, "..");
 const validatorScript = path.join(smokeRoot, "scripts", "validate-connectors.mjs");
+const templateRoot = path.join(smokeRoot, "templates", "connector");
 
 const writeJson = (filePath, value) => {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -125,6 +126,15 @@ const runValidator = (root) =>
     encoding: "utf8",
   });
 
+const assertPathExists = (targetPath, context) => {
+  assert.equal(fs.existsSync(targetPath), true, `${context} should exist.`);
+};
+
+const assertFileContains = (targetPath, expectedText, context) => {
+  const content = fs.readFileSync(targetPath, "utf8");
+  assert.match(content, new RegExp(expectedText), `${context} should mention ${expectedText}.`);
+};
+
 const assertSuccess = (result, context) => {
   assert.equal(result.status, 0, `${context} should pass.\n${result.stdout}\n${result.stderr}`);
 };
@@ -175,5 +185,43 @@ const secretLeakRoot = buildFixtureRepo({
   },
 });
 assertFailure(runValidator(secretLeakRoot), "secret", "secret-like value fixture");
+
+const templateRequiredFiles = [
+  "manifest.json",
+  "auth.json",
+  "webhook.json",
+  "polling.json",
+  "mapping.json",
+  "README.md",
+  "fixtures/webhook-event.json",
+  "fixtures/polling-page.json",
+];
+
+for (const relativePath of templateRequiredFiles) {
+  assertPathExists(path.join(templateRoot, relativePath), `template file ${relativePath}`);
+}
+
+assertFileContains(
+  path.join(templateRoot, "README.md"),
+  "replace",
+  "template README",
+);
+
+for (const placeholderFile of ["manifest.json", "auth.json", "fixtures/webhook-event.json"]) {
+  assertFileContains(
+    path.join(templateRoot, placeholderFile),
+    "example|placeholder|redacted",
+    `template placeholder file ${placeholderFile}`,
+  );
+}
+
+const templateValidationRoot = fs.mkdtempSync(path.join(os.tmpdir(), "marketplace-template-"));
+for (const directory of ["connectors", "schemas", "docs", "templates", "scripts"]) {
+  fs.mkdirSync(path.join(templateValidationRoot, directory), { recursive: true });
+}
+fs.cpSync(templateRoot, path.join(templateValidationRoot, "connectors", "template-provider"), {
+  recursive: true,
+});
+assertSuccess(runValidator(templateValidationRoot), "template connector fixture");
 
 console.log("PASS");

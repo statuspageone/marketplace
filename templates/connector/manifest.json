@@ -1,0 +1,14 @@
+{
+  "slug": "example-provider",
+  "name": "Example Provider",
+  "description": "Placeholder connector metadata for marketplace contributors.",
+  "documentationUrl": "https://example.com/docs/example-provider",
+  "deliveryModes": ["webhook", "polling"],
+  "auth": "oauth2",
+  "files": {
+    "auth": "auth.json",
+    "webhook": "webhook.json",
+    "polling": "polling.json",
+    "mapping": "mapping.json"
+  }
+}
