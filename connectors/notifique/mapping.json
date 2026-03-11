@@ -1,0 +1,102 @@
+{
+  "routes": [
+    {
+      "sourceEvent": "message.sent",
+      "canonicalRoute": "request_log.created",
+      "eventType": "request_log",
+      "description": "Notifique message sent event maps to request_log creation."
+    },
+    {
+      "sourceEvent": "message.delivered",
+      "canonicalRoute": "request_log.updated",
+      "eventType": "request_log",
+      "description": "Message delivery update maps to request_log update."
+    },
+    {
+      "sourceEvent": "message.failed",
+      "canonicalRoute": "request_log.updated",
+      "eventType": "request_log",
+      "description": "Message failure maps to request_log update."
+    },
+    {
+      "sourceEvent": "sms.sent",
+      "canonicalRoute": "request_log.created",
+      "eventType": "request_log",
+      "description": "SMS sent event maps to request_log creation."
+    },
+    {
+      "sourceEvent": "sms.delivered",
+      "canonicalRoute": "request_log.updated",
+      "eventType": "request_log",
+      "description": "SMS delivery maps to request_log update."
+    },
+    {
+      "sourceEvent": "sms.failed",
+      "canonicalRoute": "request_log.updated",
+      "eventType": "request_log",
+      "description": "SMS failure maps to request_log update."
+    },
+    {
+      "sourceEvent": "email.sent",
+      "canonicalRoute": "request_log.created",
+      "eventType": "request_log",
+      "description": "Email sent event maps to request_log creation."
+    },
+    {
+      "sourceEvent": "email.delivered",
+      "canonicalRoute": "request_log.updated",
+      "eventType": "request_log",
+      "description": "Email delivery maps to request_log update."
+    },
+    {
+      "sourceEvent": "email.failed",
+      "canonicalRoute": "request_log.updated",
+      "eventType": "request_log",
+      "description": "Email failure maps to request_log update."
+    },
+    {
+      "sourceEvent": "push.sent",
+      "canonicalRoute": "request_log.created",
+      "eventType": "request_log",
+      "description": "Push sent event maps to request_log creation."
+    },
+    {
+      "sourceEvent": "push.delivered",
+      "canonicalRoute": "request_log.updated",
+      "eventType": "request_log",
+      "description": "Push delivery maps to request_log update."
+    },
+    {
+      "sourceEvent": "push.failed",
+      "canonicalRoute": "request_log.updated",
+      "eventType": "request_log",
+      "description": "Push failure maps to request_log update."
+    }
+  ],
+  "fields": [
+    {
+      "sourcePath": "event",
+      "canonicalField": "request_log.event"
+    },
+    {
+      "sourcePath": "messageId",
+      "canonicalField": "request_log.id"
+    },
+    {
+      "sourcePath": "timestamp",
+      "canonicalField": "request_log.created_at"
+    },
+    {
+      "sourcePath": "data.to",
+      "canonicalField": "request_log.recipient"
+    },
+    {
+      "sourcePath": "data.status",
+      "canonicalField": "request_log.status"
+    },
+    {
+      "sourcePath": "workspaceId",
+      "canonicalField": "request_log.workspace_id"
+    }
+  ]
+}
