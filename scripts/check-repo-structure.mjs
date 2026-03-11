@@ -52,8 +52,17 @@ const requiredDocs = [
   "docs/review-checklist.md",
 ];
 
+const requiredMetaFiles = [
+  ".github/workflows/validate-connectors.yml",
+  ".github/pull_request_template.md",
+];
+
 for (const docPath of requiredDocs) {
   requirePath(docPath);
+}
+
+for (const metaFilePath of requiredMetaFiles) {
+  requirePath(metaFilePath);
 }
 
 for (const docLink of requiredDocs) {
@@ -65,6 +74,9 @@ requireFileContains(
   "Do not include secrets or real customer data.",
   "security-and-redaction.md must explicitly forbid secrets and real customer data",
 );
+
+requireFileContains("README.md", "pnpm validate", "README.md must mention local validation with pnpm validate");
+requireFileContains("README.md", "pull request", "README.md must describe pull request expectations");
 
 if (failures.length > 0) {
   console.error("FAIL");

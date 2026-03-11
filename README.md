@@ -25,3 +25,9 @@ Public connector-authoring repository for StatuspageOne marketplace integrations
 - `scripts/` local validation and repo checks
 
 This repository is declarative only. Do not add secrets, runtime code, or private customer data.
+
+## Submission Expectations
+
+- Run `pnpm validate` locally before opening a pull request.
+- Expect GitHub Actions to run the same validation in CI for every pull request.
+- Use the repository pull request template to confirm fixture redaction, connector scope, and documentation coverage.
