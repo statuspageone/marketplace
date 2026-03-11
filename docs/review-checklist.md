@@ -7,3 +7,5 @@
 - Route normalization is stable, canonical, and explained in the connector README.
 - Fixtures are redacted, minimal, and free of secrets or customer data.
 - No runtime code, private customer logic, or importer implementation details are present.
+- The pull request template is fully completed, including the redaction confirmation.
+- CI passes with `pnpm validate` without requiring private context or non-public dependencies.
