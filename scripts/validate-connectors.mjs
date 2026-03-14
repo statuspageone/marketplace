@@ -182,6 +182,13 @@ const validateConnector = (connectorPath, schemas) => {
       if (propertyName.toLowerCase().includes("envvar") && envVarPattern.test(stringValue)) {
         return;
       }
+      // Allow auth enum value "apiKey" (connector type, not a secret)
+      if (
+        (fileName === "manifest" && propertyName === "auth") ||
+        (fileName === "auth" && propertyName === "strategy")
+      ) {
+        if (stringValue === "apiKey") return;
+      }
 
       if (secretPattern.test(stringValue) && !envVarPattern.test(stringValue)) {
         failures.push(`${fileNames[fileName]} contains a secret-like value`);
