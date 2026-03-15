@@ -1,0 +1,13 @@
+slug: example-provider
+name: Example Provider
+description: Placeholder connector metadata for marketplace contributors.
+documentationUrl: https://example.com/docs/example-provider
+deliveryModes:
+  - webhook
+  - polling
+auth: oauth2
+files:
+  auth: auth.yaml
+  webhook: webhook.yaml
+  polling: polling.yaml
+  mapping: mapping.yaml

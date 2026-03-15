@@ -1,6 +1,0 @@
-{
-  "subscriptionUrl": "https://api.example.com/webhooks",
-  "signatureHeader": "x-example-signature",
-  "events": ["incident.created"],
-  "fixturePath": "fixtures/webhook-event.json"
-}
