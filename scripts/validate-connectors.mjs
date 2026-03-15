@@ -13,11 +13,11 @@ const schemaFiles = {
 };
 
 const fileNames = {
-  manifest: "manifest.json",
-  auth: "auth.json",
-  webhook: "webhook.json",
-  polling: "polling.json",
-  mapping: "mapping.json",
+  manifest: "manifest.yaml",
+  auth: "auth.yaml",
+  webhook: "webhook.yaml",
+  polling: "polling.yaml",
+  mapping: "mapping.yaml",
 };
 
 const secretPattern =
@@ -165,7 +165,7 @@ const validateConnector = (connectorPath, schemas) => {
   const manifestFiles = parsedFiles.manifest?.files ?? {};
   for (const manifestFileKey of ["auth", "webhook", "polling", "mapping"]) {
     if (manifestFiles[manifestFileKey] && manifestFiles[manifestFileKey] !== fileNames[manifestFileKey]) {
-      failures.push(`manifest.json files.${manifestFileKey} must reference ${fileNames[manifestFileKey]}`);
+      failures.push(`${fileNames.manifest} files.${manifestFileKey} must reference ${fileNames[manifestFileKey]}`);
     }
   }
 
@@ -182,12 +182,12 @@ const validateConnector = (connectorPath, schemas) => {
 
   const routes = parsedFiles.mapping?.routes ?? [];
   if (routes.length === 0) {
-    failures.push("mapping.json must define at least one canonical route");
+    failures.push(`${fileNames.mapping} must define at least one canonical route`);
   }
 
   routes.forEach((route, routeIndex) => {
     if (!canonicalRoutePattern.test(route.canonicalRoute ?? "")) {
-      failures.push(`mapping.json routes[${routeIndex}].canonicalRoute must use dot-separated canonical form`);
+      failures.push(`${fileNames.mapping} routes[${routeIndex}].canonicalRoute must use dot-separated canonical form`);
     }
   });
 
