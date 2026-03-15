@@ -1,0 +1,29 @@
+destination_id: webhook
+http:
+  method: POST
+  url: "{{installation.webhook_url}}"
+  headers:
+    Content-Type: application/json
+  body_type: json
+  body_template: |
+    {
+      "content": "{{render destination_config.message_template context}}",
+      "embeds": [{
+        "title": "Monitor Alert",
+        "color": {{#if event.is_down}}16711680{{else if event.is_degraded}}16776960{{else}}65280{{/if}},
+        "fields": [
+          {"name": "Monitor", "value": "{{monitor.name}}", "inline": true},
+          {"name": "Status", "value": "{{uppercase event.status}}", "inline": true},
+          {"name": "URL", "value": "{{monitor.url}}", "inline": false},
+          {"name": "Region", "value": "{{monitor.region}}", "inline": true},
+          {"name": "Time", "value": "{{event.timestamp}}", "inline": true}
+        ],
+        "footer": {
+          "text": "StatusPageOne"
+        }
+      }]
+    }
+retry:
+  max_attempts: 3
+  backoff_multiplier: 2
+success_codes: [200, 204]
