@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import yaml from "js-yaml";
 
 const scriptRoot = path.resolve(import.meta.dirname, "..");
 
@@ -35,13 +36,26 @@ for (let index = 0; index < args.length; index += 1) {
   }
 }
 
-const readJson = (filePath) => JSON.parse(fs.readFileSync(filePath, "utf8"));
+const readConfigFile = (filePath) => {
+  const content = fs.readFileSync(filePath, "utf8");
+
+  // Support both YAML and JSON for backward compatibility during migration
+  if (filePath.endsWith(".yaml") || filePath.endsWith(".yml")) {
+    return yaml.load(content, {
+      schema: yaml.SAFE_SCHEMA, // Security: disable custom types
+      json: true, // Use JSON-compatible types only
+    });
+  }
+
+  // Legacy JSON support
+  return JSON.parse(content);
+};
 
 const loadSchemas = () =>
   Object.fromEntries(
     Object.entries(schemaFiles).map(([key, fileName]) => [
       key,
-      readJson(path.join(scriptRoot, "schemas", fileName)),
+      readConfigFile(path.join(scriptRoot, "schemas", fileName)),
     ]),
   );
 
@@ -136,7 +150,7 @@ const validateConnector = (connectorPath, schemas) => {
     }
 
     try {
-      parsedFiles[key] = readJson(fullPath);
+      parsedFiles[key] = readConfigFile(fullPath);
       validateAgainstSchema(schemas[key], parsedFiles[key], fileName, failures);
     } catch (error) {
       failures.push(`${fileName} could not be parsed: ${error.message}`);
