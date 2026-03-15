@@ -4,12 +4,12 @@ Notifique is a multi-channel messaging provider (WhatsApp, SMS, email, push). Th
 
 ## Why both modes are present
 
-- **webhook.json**: Notifique pushes events to a URL you register with `POST /v1/webhooks`. Events are signed with HMAC-SHA256 (`X-Notifique-Signature`: `t={timestamp},v1={hash}`). Use the webhook secret returned at subscription time to verify payloads.
-- **polling.json**: `GET /v1/webhooks/deliveries` returns paginated delivery logs (offset-based: `page`, `limit`). Use for backfill or when webhooks were unavailable.
+- **webhook.yaml**: Notifique pushes events to a URL you register with `POST /v1/webhooks`. Events are signed with HMAC-SHA256 (`X-Notifique-Signature`: `t={timestamp},v1={hash}`). Use the webhook secret returned at subscription time to verify payloads.
+- **polling.yaml**: `GET /v1/webhooks/deliveries` returns paginated delivery logs (offset-based: `page`, `limit`). Use for backfill or when webhooks were unavailable.
 
 ## Auth
 
-Notifique uses API Key authentication. The connector declares the `Authorization` header (value: `Bearer <key>`); the provider also accepts `x-api-key: <key>`. Required scope for webhooks and deliveries: `webhooks:read` or `webhooks:manage`. Use the env var name declared in `auth.json`; never commit real keys.
+Notifique uses API Key authentication. The connector declares the `Authorization` header (value: `Bearer <key>`); the provider also accepts `x-api-key: <key>`. Required scope for webhooks and deliveries: `webhooks:read` or `webhooks:manage`. Use the env var name declared in `auth.yaml`; never commit real keys.
 
 ## Route normalization
 

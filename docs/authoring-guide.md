@@ -11,11 +11,11 @@
 
 Each connector folder must include:
 
-- `manifest.json`
-- `auth.json`
-- `webhook.json`
-- `polling.json`
-- `mapping.json`
+- `manifest.yaml`
+- `auth.yaml`
+- `webhook.yaml`
+- `polling.yaml`
+- `mapping.yaml`
 - `README.md`
 - `fixtures/webhook-event.json`
 - `fixtures/polling-page.json`

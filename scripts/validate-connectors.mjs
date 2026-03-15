@@ -39,16 +39,11 @@ for (let index = 0; index < args.length; index += 1) {
 const readConfigFile = (filePath) => {
   const content = fs.readFileSync(filePath, "utf8");
 
-  // Support both YAML and JSON for backward compatibility during migration
-  if (filePath.endsWith(".yaml") || filePath.endsWith(".yml")) {
-    return yaml.load(content, {
-      schema: yaml.SAFE_SCHEMA, // Security: disable custom types
-      json: true, // Use JSON-compatible types only
-    });
-  }
-
-  // Legacy JSON support
-  return JSON.parse(content);
+  // Connector config files are YAML-only. Keep parsing locked to JSON-compatible types.
+  return yaml.load(content, {
+    schema: yaml.SAFE_SCHEMA, // Security: disable custom types
+    json: true, // Use JSON-compatible types only
+  });
 };
 
 const loadSchemas = () =>

@@ -4,8 +4,8 @@ This sample shows how to represent a provider that can push email lifecycle even
 
 ## Why both modes are present
 
-- `webhook.json` covers near-real-time email events and signature metadata.
-- `polling.json` covers cursor-based backfill when webhooks were unavailable or need reconciliation.
+- `webhook.yaml` covers near-real-time email events and signature metadata.
+- `polling.yaml` covers cursor-based backfill when webhooks were unavailable or need reconciliation.
 
 ## Public-safety notes
 

@@ -1,0 +1,7 @@
+endpoint: https://api.notifique.dev/v1/webhooks/deliveries
+itemsPath: data
+cursorField: createdAt
+pagination:
+  type: offset
+  nextCursorPath: pagination.page
+fixturePath: fixtures/polling-page.json
