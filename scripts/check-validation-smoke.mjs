@@ -3,6 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import yaml from "js-yaml";
 
 const smokeRoot = path.resolve(import.meta.dirname, "..");
 const validatorScript = path.join(smokeRoot, "scripts", "validate-connectors.mjs");
@@ -14,6 +15,11 @@ const writeJson = (filePath, value) => {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`);
 };
 
+const writeYaml = (filePath, value) => {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, yaml.dump(value, { noRefs: true, lineWidth: -1 }));
+};
+
 const buildFixtureRepo = ({ mutateValidConnector } = {}) => {
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "marketplace-smoke-"));
   const directories = ["connectors", "schemas", "docs", "templates", "scripts"];
@@ -23,10 +29,9 @@ const buildFixtureRepo = ({ mutateValidConnector } = {}) => {
   }
 
   const connectorRoot = path.join(tempRoot, "connectors", "demo-provider");
-  const fixturesRoot = path.join(connectorRoot, "fixtures");
 
   const connectorFiles = {
-    "manifest.json": {
+    "manifest.yaml": {
       slug: "demo-provider",
       name: "Demo Provider",
       description: "Sanitized example connector for validation smoke tests.",
@@ -34,13 +39,13 @@ const buildFixtureRepo = ({ mutateValidConnector } = {}) => {
       deliveryModes: ["webhook", "polling"],
       auth: "oauth2",
       files: {
-        auth: "auth.json",
-        webhook: "webhook.json",
-        polling: "polling.json",
-        mapping: "mapping.json",
+        auth: "auth.yaml",
+        webhook: "webhook.yaml",
+        polling: "polling.yaml",
+        mapping: "mapping.yaml",
       },
     },
-    "auth.json": {
+    "auth.yaml": {
       strategy: "oauth2",
       oauth2: {
         authorizationUrl: "https://example.com/oauth/authorize",
@@ -50,13 +55,13 @@ const buildFixtureRepo = ({ mutateValidConnector } = {}) => {
         clientSecretEnvVar: "SP1_EXAMPLE_CLIENT_SECRET",
       },
     },
-    "webhook.json": {
+    "webhook.yaml": {
       subscriptionUrl: "https://api.example.com/webhooks",
       signatureHeader: "x-demo-signature",
       events: ["incident.created"],
       fixturePath: "fixtures/webhook-event.json",
     },
-    "polling.json": {
+    "polling.yaml": {
       endpoint: "https://api.example.com/incidents",
       itemsPath: "data.items",
       cursorField: "updated_at",
@@ -66,7 +71,7 @@ const buildFixtureRepo = ({ mutateValidConnector } = {}) => {
       },
       fixturePath: "fixtures/polling-page.json",
     },
-    "mapping.json": {
+    "mapping.yaml": {
       routes: [
         {
           sourceEvent: "incident.created",
@@ -112,11 +117,16 @@ const buildFixtureRepo = ({ mutateValidConnector } = {}) => {
       continue;
     }
 
+    if (relativePath.endsWith(".yaml")) {
+      writeYaml(filePath, value);
+      continue;
+    }
+
     writeJson(filePath, value);
   }
 
   if (mutateValidConnector) {
-    mutateValidConnector({ tempRoot, connectorRoot, writeJson });
+    mutateValidConnector({ tempRoot, connectorRoot, writeJson, writeYaml });
   }
 
   return tempRoot;
@@ -136,7 +146,7 @@ const assertFileContains = (targetPath, expectedText, context) => {
   assert.match(content, new RegExp(expectedText), `${context} should mention ${expectedText}.`);
 };
 
-const readJson = (targetPath) => JSON.parse(fs.readFileSync(targetPath, "utf8"));
+const readYaml = (targetPath) => yaml.load(fs.readFileSync(targetPath, "utf8"));
 
 const assertSuccess = (result, context) => {
   assert.equal(result.status, 0, `${context} should pass.\n${result.stdout}\n${result.stderr}`);
@@ -155,27 +165,27 @@ const validRoot = buildFixtureRepo();
 assertSuccess(runValidator(validRoot), "valid connector fixture");
 
 const missingFieldRoot = buildFixtureRepo({
-  mutateValidConnector: ({ connectorRoot, writeJson }) => {
-    writeJson(path.join(connectorRoot, "manifest.json"), {
+  mutateValidConnector: ({ connectorRoot, writeYaml }) => {
+    writeYaml(path.join(connectorRoot, "manifest.yaml"), {
       slug: "demo-provider",
       description: "Missing required name field.",
       documentationUrl: "https://example.com/docs",
       deliveryModes: ["webhook", "polling"],
       auth: "oauth2",
       files: {
-        auth: "auth.json",
-        webhook: "webhook.json",
-        polling: "polling.json",
-        mapping: "mapping.json",
+        auth: "auth.yaml",
+        webhook: "webhook.yaml",
+        polling: "polling.yaml",
+        mapping: "mapping.yaml",
       },
     });
   },
 });
-assertFailure(runValidator(missingFieldRoot), "manifest.json", "missing required field fixture");
+assertFailure(runValidator(missingFieldRoot), "manifest.yaml", "missing required field fixture");
 
 const secretLeakRoot = buildFixtureRepo({
-  mutateValidConnector: ({ connectorRoot, writeJson }) => {
-    writeJson(path.join(connectorRoot, "auth.json"), {
+  mutateValidConnector: ({ connectorRoot, writeYaml }) => {
+    writeYaml(path.join(connectorRoot, "auth.yaml"), {
       strategy: "oauth2",
       oauth2: {
         authorizationUrl: "https://example.com/oauth/authorize",
@@ -190,11 +200,11 @@ const secretLeakRoot = buildFixtureRepo({
 assertFailure(runValidator(secretLeakRoot), "secret", "secret-like value fixture");
 
 const templateRequiredFiles = [
-  "manifest.json",
-  "auth.json",
-  "webhook.json",
-  "polling.json",
-  "mapping.json",
+  "manifest.yaml",
+  "auth.yaml",
+  "webhook.yaml",
+  "polling.yaml",
+  "mapping.yaml",
   "README.md",
   "fixtures/webhook-event.json",
   "fixtures/polling-page.json",
@@ -210,7 +220,7 @@ assertFileContains(
   "template README",
 );
 
-for (const placeholderFile of ["manifest.json", "auth.json", "fixtures/webhook-event.json"]) {
+for (const placeholderFile of ["manifest.yaml", "auth.yaml", "fixtures/webhook-event.json"]) {
   assertFileContains(
     path.join(templateRoot, placeholderFile),
     "example|placeholder|redacted",
@@ -228,11 +238,11 @@ fs.cpSync(templateRoot, path.join(templateValidationRoot, "connectors", "templat
 assertSuccess(runValidator(templateValidationRoot), "template connector fixture");
 
 const resendRequiredFiles = [
-  "manifest.json",
-  "auth.json",
-  "webhook.json",
-  "polling.json",
-  "mapping.json",
+  "manifest.yaml",
+  "auth.yaml",
+  "webhook.yaml",
+  "polling.yaml",
+  "mapping.yaml",
   "README.md",
   "fixtures/webhook-event.json",
   "fixtures/polling-page.json",
@@ -244,14 +254,14 @@ for (const relativePath of resendRequiredFiles) {
 
 assertSuccess(runValidator(smokeRoot), "resend sample connector");
 
-const resendManifest = readJson(path.join(resendRoot, "manifest.json"));
+const resendManifest = readYaml(path.join(resendRoot, "manifest.yaml"));
 assert.deepEqual(
   resendManifest.deliveryModes,
   ["webhook", "polling"],
   "resend sample should represent both webhook and polling delivery modes.",
 );
 
-const resendAuth = readJson(path.join(resendRoot, "auth.json"));
+const resendAuth = readYaml(path.join(resendRoot, "auth.yaml"));
 assert.equal(Array.isArray(resendAuth.install?.fields), true, "resend sample should include install config fields.");
 assert.ok(resendAuth.install.fields.length >= 2, "resend sample should include multiple install config fields.");
 

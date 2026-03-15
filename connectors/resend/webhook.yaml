@@ -1,0 +1,10 @@
+subscriptionUrl: https://api.resend.com/webhooks
+signatureHeader: resend-signature
+events:
+  - email.sent
+  - email.delivered
+  - email.bounced
+fixturePath: fixtures/webhook-event.json
+signature:
+  algorithm: hmac-sha256
+  secretEnvVar: SP1_RESEND_WEBHOOK_SECRET

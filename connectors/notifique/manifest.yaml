@@ -1,0 +1,14 @@
+slug: notifique
+name: Notifique
+description: "Connector for Notifique: request-log and delivery events from WhatsApp, SMS, email, and push via webhooks and polling."
+documentationUrl: https://docs.notifique.dev
+deliveryModes:
+  - webhook
+  - polling
+auth: apiKey
+version: 1.0.0
+files:
+  auth: auth.yaml
+  webhook: webhook.yaml
+  polling: polling.yaml
+  mapping: mapping.yaml

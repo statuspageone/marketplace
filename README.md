@@ -5,7 +5,7 @@ Public connector-authoring repository for StatuspageOne marketplace integrations
 ## Quickstart
 
 1. Copy `templates/connector` into `connectors/<provider-slug>`.
-2. Replace placeholder metadata, auth config, fixtures, and mappings.
+2. Replace placeholder YAML metadata, auth config, fixtures, and mappings.
 3. Run `pnpm validate` from this repository.
 4. Open a pull request with only sanitized examples and documentation.
 
@@ -25,6 +25,7 @@ Public connector-authoring repository for StatuspageOne marketplace integrations
 - `scripts/` local validation and repo checks
 
 This repository is declarative only. Do not add secrets, runtime code, or private customer data.
+Connector definition files use YAML. Provider payload fixtures remain JSON.
 
 ## Submission Expectations
 
