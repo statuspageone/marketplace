@@ -1,7 +1,0 @@
-endpoint: https://api.resend.com/emails
-itemsPath: data
-cursorField: created_at
-pagination:
-  type: cursor
-  nextCursorPath: next_cursor
-fixturePath: fixtures/polling-page.json

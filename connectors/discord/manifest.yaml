@@ -1,8 +1,0 @@
-slug: discord
-name: Discord
-description: Send monitor alerts to Discord channels via webhooks
-documentationUrl: https://support.discord.com/hc/en-us/articles/228383668
-app_type: destination
-version: 1.0.0
-capabilities:
-  - webhook
