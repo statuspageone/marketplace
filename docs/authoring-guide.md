@@ -2,14 +2,14 @@
 
 ## Workflow
 
-1. Copy `templates/connector` to `connectors/<provider-slug>`.
+1. Copy `templates/source/` to `apps/sources/<provider-slug>/`.
 2. Replace every placeholder with provider-specific metadata.
 3. Keep every example sanitized and obviously fake.
 4. Run `pnpm validate` before opening a pull request.
 
 ## Required Files
 
-Each connector folder must include:
+Each source app folder must include:
 
 - `manifest.yaml`
 - `auth.yaml`
@@ -29,7 +29,7 @@ Each connector folder must include:
 
 ## Template Usage
 
-The starter kit in `templates/connector` is intentionally fake. Replace every `example`, `placeholder`, and `redacted` value before submitting a real connector, but keep the replacements sanitized and public-safe.
+The starter kit in `templates/source` is intentionally fake. Replace every `example`, `placeholder`, and `redacted` value before submitting a real source app, but keep the replacements sanitized and public-safe.
 
 ## Authoring a Destination
 
