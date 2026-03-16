@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Source Manifest",
+  "type": "object",
+  "required": ["slug", "name", "description", "documentationUrl", "app_type", "version", "deliveryModes", "auth", "files"],
+  "properties": {
+    "slug": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "documentationUrl": { "type": "string" },
+    "app_type": { "type": "string", "enum": ["source"] },
+    "version": { "type": "string" },
+    "deliveryModes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "enum": ["webhook", "polling"] }
+    },
+    "auth": { "type": "string", "enum": ["oauth2", "apiKey", "none"] },
+    "files": {
+      "type": "object",
+      "required": ["auth", "webhook", "polling", "mapping"],
+      "properties": {
+        "auth": { "type": "string" },
+        "webhook": { "type": "string" },
+        "polling": { "type": "string" },
+        "mapping": { "type": "string" }
+      }
+    }
+  }
+}

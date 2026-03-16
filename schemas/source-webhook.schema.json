@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Source Webhook",
+  "type": "object",
+  "required": ["subscriptionUrl", "signatureHeader", "events", "fixturePath"],
+  "properties": {
+    "subscriptionUrl": { "type": "string" },
+    "signatureHeader": { "type": "string" },
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "fixturePath": { "type": "string" }
+  }
+}
