@@ -1,0 +1,15 @@
+slug: resend
+name: Resend
+description: Public sample connector for Resend email event ingestion.
+documentationUrl: https://resend.com/docs
+app_type: source
+deliveryModes:
+  - webhook
+  - polling
+auth: oauth2
+version: 1.0.0
+files:
+  auth: auth.yaml
+  webhook: webhook.yaml
+  polling: polling.yaml
+  mapping: mapping.yaml
