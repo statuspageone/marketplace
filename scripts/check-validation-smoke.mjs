@@ -8,7 +8,7 @@ import yaml from "js-yaml";
 const smokeRoot = path.resolve(import.meta.dirname, "..");
 const validatorScript = path.join(smokeRoot, "scripts", "validate-apps.mjs");
 const templateRoot = path.join(smokeRoot, "templates", "source");
-const resendRoot = path.join(smokeRoot, "sources", "resend");
+const resendRoot = path.join(smokeRoot, "apps", "sources", "resend");
 
 const writeJson = (filePath, value) => {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -22,13 +22,13 @@ const writeYaml = (filePath, value) => {
 
 const buildFixtureRepo = ({ mutateValidConnector } = {}) => {
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "marketplace-smoke-"));
-  const directories = ["sources", "destinations", "schemas", "docs", "templates", "scripts"];
+  const directories = ["apps", "schemas", "docs", "templates", "scripts"];
 
   for (const directory of directories) {
     fs.mkdirSync(path.join(tempRoot, directory), { recursive: true });
   }
 
-  const connectorRoot = path.join(tempRoot, "sources", "demo-provider");
+  const connectorRoot = path.join(tempRoot, "apps", "sources", "demo-provider");
 
   const connectorFiles = {
     "manifest.yaml": {
@@ -231,10 +231,10 @@ for (const placeholderFile of ["manifest.yaml", "auth.yaml", "fixtures/webhook-e
 }
 
 const templateValidationRoot = fs.mkdtempSync(path.join(os.tmpdir(), "marketplace-template-"));
-for (const directory of ["sources", "destinations", "schemas", "docs", "templates", "scripts"]) {
+for (const directory of ["apps", "schemas", "docs", "templates", "scripts"]) {
   fs.mkdirSync(path.join(templateValidationRoot, directory), { recursive: true });
 }
-fs.cpSync(templateRoot, path.join(templateValidationRoot, "sources", "template-provider"), {
+fs.cpSync(templateRoot, path.join(templateValidationRoot, "apps", "sources", "template-provider"), {
   recursive: true,
 });
 assertSuccess(runValidator(templateValidationRoot), "template connector fixture");
@@ -279,7 +279,7 @@ for (const sanitizedFixture of [
 }
 
 // Destination smoke test — discord
-const discordRoot = path.join(smokeRoot, "destinations", "discord");
+const discordRoot = path.join(smokeRoot, "apps", "destinations", "discord");
 
 const discordRequiredFiles = [
   "manifest.yaml",

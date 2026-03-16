@@ -289,8 +289,8 @@ const validateDestination = (appPath) => {
   return failures;
 };
 
-const sourceDirectories = collectAppDirectories(appRepoRoot, "source");
-const destinationDirectories = collectAppDirectories(appRepoRoot, "destination");
+const sourceDirectories = collectAppDirectories(path.join(appRepoRoot, "apps"), "source");
+const destinationDirectories = collectAppDirectories(path.join(appRepoRoot, "apps"), "destination");
 const failures = [];
 let totalApps = 0;
 
