@@ -4,7 +4,7 @@ Use this template to author a new destination app.
 
 ## Getting Started
 
-1. Copy this template to `destinations/<your-slug>/`.
+1. Copy this template to `apps/destinations/<your-slug>/`.
 2. Edit `manifest.yaml`: update `slug`, `name`, `description`, `documentationUrl`.
 3. Edit `auth.yaml`: choose strategy (`webhook_url`, `bearer`, or `none`).
 4. Edit `destinations.yaml`: define config fields shown to users.

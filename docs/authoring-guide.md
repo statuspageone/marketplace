@@ -33,7 +33,7 @@ The starter kit in `templates/connector` is intentionally fake. Replace every `e
 
 ## Authoring a Destination
 
-1. Copy `templates/destination/` to `destinations/<slug>/`.
+1. Copy `templates/destination/` to `apps/destinations/<slug>/`.
 2. Edit `manifest.yaml`: update `slug`, `name`, `description`, `documentationUrl`.
 3. Edit `auth.yaml`: choose strategy (`webhook_url`, `bearer`, or `none`).
 4. Edit `destinations.yaml`: define config fields shown to users during installation.
