@@ -6,8 +6,7 @@
   "scripts": {
     "validate": "pnpm validate:structure && pnpm validate:apps",
     "validate:structure": "node scripts/check-repo-structure.mjs",
-    "validate:apps": "node scripts/validate-apps.mjs",
-    "validate:connectors": "node scripts/validate-connectors.mjs"
+    "validate:apps": "node scripts/validate-apps.mjs"
   },
   "dependencies": {
     "js-yaml": "^4.1.1"
