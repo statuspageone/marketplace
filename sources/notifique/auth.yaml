@@ -1,0 +1,4 @@
+strategy: apiKey
+apiKey:
+  headerName: Authorization
+  envVar: SP1_NOTIFIQUE_API_KEY

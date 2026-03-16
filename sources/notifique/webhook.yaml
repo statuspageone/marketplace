@@ -1,0 +1,20 @@
+subscriptionUrl: https://api.notifique.dev/v1/webhooks
+signatureHeader: X-Notifique-Signature
+events:
+  - message.sent
+  - message.delivered
+  - message.read
+  - message.failed
+  - sms.sent
+  - sms.delivered
+  - sms.failed
+  - email.sent
+  - email.delivered
+  - email.failed
+  - push.sent
+  - push.delivered
+  - push.failed
+fixturePath: fixtures/webhook-event.json
+signature:
+  algorithm: hmac-sha256
+  secretEnvVar: SP1_NOTIFIQUE_WEBHOOK_SECRET

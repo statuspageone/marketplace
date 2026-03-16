@@ -1,0 +1,14 @@
+{
+  "event": "message.sent",
+  "workspaceId": "clxxworkspace_redacted",
+  "instanceId": "clxxinstance_redacted",
+  "messageId": "clxxmessage_redacted",
+  "timestamp": "2026-03-11T12:00:00.000Z",
+  "data": {
+    "to": "5511999999999",
+    "type": "TEXT",
+    "status": "SENT",
+    "sentAt": "2026-03-11T12:00:00.000Z",
+    "externalId": "ext_redacted"
+  }
+}
