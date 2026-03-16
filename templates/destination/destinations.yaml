@@ -1,0 +1,13 @@
+destinations:
+  - id: webhook
+    name: Example Alert
+    description: Post monitor status updates to Example Service
+    icon: message-square
+    config_fields:
+      - key: message_template
+        label: Message Template
+        type: textarea
+        placeholder: "Monitor {{monitor.name}} is {{event.status}}"
+        required: true
+        default: "Monitor {{monitor.name}} changed to {{event.status}}"
+        help: Use {{variable}} for dynamic values.

@@ -1,0 +1,11 @@
+{
+  "monitor": {
+    "name": "Example API",
+    "url": "https://api.example.com/health"
+  },
+  "event": {
+    "status": "down",
+    "previous_status": "up",
+    "timestamp": "2026-01-01T00:00:00Z"
+  }
+}

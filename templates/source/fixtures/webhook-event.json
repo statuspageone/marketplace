@@ -1,0 +1,8 @@
+{
+  "id": "evt_example_redacted",
+  "type": "incident.created",
+  "data": {
+    "id": "inc_example_redacted",
+    "title": "Example incident placeholder"
+  }
+}

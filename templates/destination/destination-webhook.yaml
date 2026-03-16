@@ -1,0 +1,15 @@
+destination_id: webhook
+http:
+  method: POST
+  url: "{{installation.webhook_url}}"
+  headers:
+    Content-Type: application/json
+  body_type: json
+  body_template: |
+    {
+      "text": "{{render destination_config.message_template context}}"
+    }
+retry:
+  max_attempts: 3
+  backoff_multiplier: 2
+success_codes: [200, 204]
