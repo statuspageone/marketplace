@@ -1,9 +1,0 @@
-type: webhook_url
-fields:
-  - key: webhook_url
-    label: Discord Webhook URL
-    type: url
-    placeholder: https://discord.com/api/webhooks/123456789/abcdef...
-    required: true
-    pattern: ^https://discord\.com/api/webhooks/\d+/[\w-]+$
-    help: Create a webhook in Discord Server Settings → Integrations → Webhooks
