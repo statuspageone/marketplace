@@ -9,3 +9,12 @@
 - No runtime code, private customer logic, or importer implementation details are present.
 - The pull request template is fully completed, including the redaction confirmation.
 - CI passes with `pnpm validate` without requiring private context or non-public dependencies.
+
+## Destination Apps
+
+- `manifest.yaml` has `app_type: destination`, `capabilities`, and `files` (auth, destinations, delivery).
+- `auth.yaml` has valid `strategy` (`webhook_url`, `bearer`, or `none`).
+- `destinations.yaml` defines a `destinations` array with at least one entry having an `id`.
+- Delivery file exists and its `destination_id` matches a destinations entry.
+- No real webhook URLs or tokens in fixtures.
+- `pnpm validate` passes.

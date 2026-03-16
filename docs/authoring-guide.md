@@ -30,3 +30,13 @@ Each connector folder must include:
 ## Template Usage
 
 The starter kit in `templates/connector` is intentionally fake. Replace every `example`, `placeholder`, and `redacted` value before submitting a real connector, but keep the replacements sanitized and public-safe.
+
+## Authoring a Destination
+
+1. Copy `templates/destination/` to `destinations/<slug>/`.
+2. Edit `manifest.yaml`: update `slug`, `name`, `description`, `documentationUrl`.
+3. Edit `auth.yaml`: choose strategy (`webhook_url`, `bearer`, or `none`).
+4. Edit `destinations.yaml`: define config fields shown to users during installation.
+5. Edit the delivery file: define the outbound HTTP request template.
+6. Add a sanitized fixture to `fixtures/`.
+7. Run `pnpm validate` before opening a PR.
