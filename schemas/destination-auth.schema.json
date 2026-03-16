@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Destination Auth",
+  "type": "object",
+  "required": ["strategy"],
+  "properties": {
+    "strategy": { "type": "string", "enum": ["webhook_url", "bearer", "none"] },
+    "field": { "type": "string" },
+    "label": { "type": "string" },
+    "pattern": { "type": "string" }
+  }
+}
