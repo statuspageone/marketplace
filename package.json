@@ -4,8 +4,9 @@
   "type": "module",
   "packageManager": "pnpm@10.11.0",
   "scripts": {
-    "validate": "pnpm validate:structure && pnpm validate:connectors",
+    "validate": "pnpm validate:structure && pnpm validate:apps",
     "validate:structure": "node scripts/check-repo-structure.mjs",
+    "validate:apps": "node scripts/validate-apps.mjs",
     "validate:connectors": "node scripts/validate-connectors.mjs"
   },
   "dependencies": {
