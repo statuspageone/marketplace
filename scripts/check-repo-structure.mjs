@@ -41,19 +41,19 @@ const requireFileContains = (relativePath, expectedText, description) => {
 requirePath("README.md");
 requirePackageScript("validate");
 
-for (const folder of ["docs", "templates", "connectors", "schemas", "scripts"]) {
+for (const folder of ["docs", "templates", "sources", "destinations", "schemas", "scripts"]) {
   requirePath(folder, `top-level folder ${folder}/`);
 }
 
 const requiredDocs = [
   "docs/authoring-guide.md",
-  "docs/connector-contract.md",
+  "docs/app-contract.md",
   "docs/security-and-redaction.md",
   "docs/review-checklist.md",
 ];
 
 const requiredMetaFiles = [
-  ".github/workflows/validate-connectors.yml",
+  ".github/workflows/validate-apps.yml",
   ".github/pull_request_template.md",
 ];
 

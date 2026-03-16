@@ -12,7 +12,7 @@ Public connector-authoring repository for StatuspageOne marketplace integrations
 ## Documentation
 
 - [Authoring Guide](docs/authoring-guide.md)
-- [Connector Contract](docs/connector-contract.md)
+- [App Contract](docs/app-contract.md)
 - [Security And Redaction](docs/security-and-redaction.md)
 - [Review Checklist](docs/review-checklist.md)
 
