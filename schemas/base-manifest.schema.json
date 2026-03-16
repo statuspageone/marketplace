@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Base Manifest",
+  "type": "object",
+  "required": ["slug", "name", "description", "documentationUrl", "app_type", "version"],
+  "properties": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "documentationUrl": { "type": "string" },
+    "app_type": {
+      "type": "string",
+      "enum": ["source", "destination"]
+    },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" }
+  }
+}
