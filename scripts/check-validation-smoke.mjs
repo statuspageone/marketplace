@@ -6,9 +6,9 @@ import { spawnSync } from "node:child_process";
 import yaml from "js-yaml";
 
 const smokeRoot = path.resolve(import.meta.dirname, "..");
-const validatorScript = path.join(smokeRoot, "scripts", "validate-connectors.mjs");
-const templateRoot = path.join(smokeRoot, "templates", "connector");
-const resendRoot = path.join(smokeRoot, "connectors", "resend");
+const validatorScript = path.join(smokeRoot, "scripts", "validate-apps.mjs");
+const templateRoot = path.join(smokeRoot, "templates", "source");
+const resendRoot = path.join(smokeRoot, "sources", "resend");
 
 const writeJson = (filePath, value) => {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -22,22 +22,24 @@ const writeYaml = (filePath, value) => {
 
 const buildFixtureRepo = ({ mutateValidConnector } = {}) => {
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "marketplace-smoke-"));
-  const directories = ["connectors", "schemas", "docs", "templates", "scripts"];
+  const directories = ["sources", "destinations", "schemas", "docs", "templates", "scripts"];
 
   for (const directory of directories) {
     fs.mkdirSync(path.join(tempRoot, directory), { recursive: true });
   }
 
-  const connectorRoot = path.join(tempRoot, "connectors", "demo-provider");
+  const connectorRoot = path.join(tempRoot, "sources", "demo-provider");
 
   const connectorFiles = {
     "manifest.yaml": {
       slug: "demo-provider",
       name: "Demo Provider",
-      description: "Sanitized example connector for validation smoke tests.",
+      description: "Sanitized example source for validation smoke tests.",
       documentationUrl: "https://example.com/docs",
+      app_type: "source",
       deliveryModes: ["webhook", "polling"],
       auth: "oauth2",
+      version: "1.0.0",
       files: {
         auth: "auth.yaml",
         webhook: "webhook.yaml",
@@ -229,10 +231,10 @@ for (const placeholderFile of ["manifest.yaml", "auth.yaml", "fixtures/webhook-e
 }
 
 const templateValidationRoot = fs.mkdtempSync(path.join(os.tmpdir(), "marketplace-template-"));
-for (const directory of ["connectors", "schemas", "docs", "templates", "scripts"]) {
+for (const directory of ["sources", "destinations", "schemas", "docs", "templates", "scripts"]) {
   fs.mkdirSync(path.join(templateValidationRoot, directory), { recursive: true });
 }
-fs.cpSync(templateRoot, path.join(templateValidationRoot, "connectors", "template-provider"), {
+fs.cpSync(templateRoot, path.join(templateValidationRoot, "sources", "template-provider"), {
   recursive: true,
 });
 assertSuccess(runValidator(templateValidationRoot), "template connector fixture");
@@ -275,5 +277,28 @@ for (const sanitizedFixture of [
     `sanitized resend fixture ${path.basename(sanitizedFixture)}`,
   );
 }
+
+// Destination smoke test — discord
+const discordRoot = path.join(smokeRoot, "destinations", "discord");
+
+const discordRequiredFiles = [
+  "manifest.yaml",
+  "auth.yaml",
+  "destinations.yaml",
+  "destination-webhook.yaml",
+  "README.md",
+  "fixtures/test-message.json",
+];
+
+for (const relativePath of discordRequiredFiles) {
+  assertPathExists(path.join(discordRoot, relativePath), `discord file ${relativePath}`);
+}
+
+const discordManifest = readYaml(path.join(discordRoot, "manifest.yaml"));
+assert.equal(discordManifest.app_type, "destination", "discord manifest should have app_type: destination");
+assert.deepEqual(discordManifest.capabilities, ["webhook"], "discord manifest should declare webhook capability");
+
+const discordAuth = readYaml(path.join(discordRoot, "auth.yaml"));
+assert.equal(discordAuth.strategy, "webhook_url", "discord auth should use webhook_url strategy");
 
 console.log("PASS");
