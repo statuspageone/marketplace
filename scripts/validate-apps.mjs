@@ -4,29 +4,16 @@ import yaml from "js-yaml";
 
 const scriptRoot = path.resolve(import.meta.dirname, "..");
 
-const SOURCE_SCHEMA_FILES = {
-  base: "base-manifest.schema.json",
-  manifest: "source-manifest.schema.json",
-  auth: "source-auth.schema.json",
-  webhook: "source-webhook.schema.json",
-  polling: "source-polling.schema.json",
-  mapping: "source-mapping.schema.json",
+const SCHEMA_FILES = {
+  baseManifest: "base-manifest.schema.json",
+  auth: "auth.schema.json",
+  sourceWebhook: "source-webhook.schema.json",
+  sourcePolling: "source-polling.schema.json",
+  sourceMapping: "source-mapping.schema.json",
+  destinationDelivery: "destination-delivery.schema.json",
 };
 
-const DESTINATION_SCHEMA_FILES = {
-  base: "base-manifest.schema.json",
-  manifest: "destination-manifest.schema.json",
-  auth: "destination-auth.schema.json",
-  delivery: "destination-delivery.schema.json",
-};
-
-const SOURCE_FILE_NAMES = {
-  manifest: "manifest.yaml",
-  auth: "auth.yaml",
-  webhook: "webhook.yaml",
-  polling: "polling.yaml",
-  mapping: "mapping.yaml",
-};
+const KNOWN_CAPABILITIES = new Set(["source", "destination"]);
 
 const SECRET_PATTERN =
   /(sk_live_|-----BEGIN|AKIA[0-9A-Z]{16}|xox[baprs]-|ghp_[A-Za-z0-9]{20,}|Bearer\s+[A-Za-z0-9._-]+|password|api[_-]?key|client[_-]?secret)/i;
@@ -35,11 +22,10 @@ const CANONICAL_ROUTE_PATTERN = /^[a-z0-9_]+(\.[a-z0-9_]+)+$/;
 
 const args = process.argv.slice(2);
 let appRepoRoot = scriptRoot;
-
-for (let index = 0; index < args.length; index += 1) {
-  if (args[index] === "--root") {
-    appRepoRoot = path.resolve(args[index + 1]);
-    index += 1;
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === "--root") {
+    appRepoRoot = path.resolve(args[i + 1]);
+    i++;
   }
 }
 
@@ -74,7 +60,6 @@ const validateAgainstSchema = (schema, value, pointer, failures) => {
     }
     return;
   }
-
   if (schema.type === "array") {
     if (!Array.isArray(value)) {
       failures.push(`${pointer} must be an array`);
@@ -83,12 +68,11 @@ const validateAgainstSchema = (schema, value, pointer, failures) => {
     if (schema.minItems && value.length < schema.minItems) {
       failures.push(`${pointer} must contain at least ${schema.minItems} item(s)`);
     }
-    value.forEach((item, itemIndex) => {
-      validateAgainstSchema(schema.items, item, `${pointer}[${itemIndex}]`, failures);
+    value.forEach((item, idx) => {
+      validateAgainstSchema(schema.items, item, `${pointer}[${idx}]`, failures);
     });
     return;
   }
-
   if (schema.type === "string") {
     if (typeof value !== "string") {
       failures.push(`${pointer} must be a string`);
@@ -99,6 +83,20 @@ const validateAgainstSchema = (schema, value, pointer, failures) => {
     }
     if (schema.pattern && !new RegExp(schema.pattern).test(value)) {
       failures.push(`${pointer} must match pattern ${schema.pattern}`);
+    }
+  }
+  if (schema.type === "integer") {
+    if (!Number.isInteger(value)) {
+      failures.push(`${pointer} must be an integer`);
+      return;
+    }
+    if (schema.minimum !== undefined && value < schema.minimum) {
+      failures.push(`${pointer} must be at least ${schema.minimum}`);
+    }
+  }
+  if (schema.type === "boolean") {
+    if (typeof value !== "boolean") {
+      failures.push(`${pointer} must be a boolean`);
     }
   }
 };
@@ -123,21 +121,16 @@ const checkSecrets = (parsedFiles, failures) => {
   for (const [fileKey, fileValue] of Object.entries(parsedFiles)) {
     walkStrings(fileValue, (stringValue, propertyName) => {
       if (propertyName.toLowerCase().includes("envvar") && ENV_VAR_PATTERN.test(stringValue)) return;
-      if (
-        (fileKey === "manifest" && propertyName === "auth") ||
-        (fileKey === "auth" && propertyName === "strategy")
-      ) {
-        if (stringValue === "apiKey") return;
-      }
+      if (fileKey === "auth" && propertyName === "strategy") return;
       if (SECRET_PATTERN.test(stringValue) && !ENV_VAR_PATTERN.test(stringValue)) {
-        failures.push(`${fileKey}.yaml contains a secret-like value`);
+        failures.push(`${fileKey} contains a secret-like value`);
       }
     });
   }
 };
 
-const collectAppDirectories = (root, type) => {
-  const appsRoot = path.join(root, `${type}s`);
+const collectApps = (root) => {
+  const appsRoot = path.join(root, "apps");
   if (!fs.existsSync(appsRoot)) return [];
   return fs
     .readdirSync(appsRoot, { withFileTypes: true })
@@ -145,72 +138,17 @@ const collectAppDirectories = (root, type) => {
     .map((entry) => path.join(appsRoot, entry.name));
 };
 
-const validateSource = (appPath) => {
+const validateApp = (appPath) => {
   const failures = [];
-  const parsedFiles = {};
   const appName = path.basename(appPath);
+  const parsedFiles = {};
 
-  for (const [key, fileName] of Object.entries(SOURCE_FILE_NAMES)) {
-    const fullPath = path.join(appPath, fileName);
-    if (!fs.existsSync(fullPath)) {
-      failures.push(`${appName} is missing ${fileName}`);
-      continue;
-    }
-    try {
-      parsedFiles[key] = readConfigFile(fullPath);
-    } catch (error) {
-      failures.push(`${fileName} could not be parsed: ${error.message}`);
-    }
-  }
-
+  // README
   if (!fs.existsSync(path.join(appPath, "README.md"))) {
     failures.push(`${appName} is missing README.md`);
   }
 
-  if (!parsedFiles.manifest) return failures;
-
-  // Pass 1: base schema
-  validateAgainstSchema(loadSchema(SOURCE_SCHEMA_FILES.base), parsedFiles.manifest, "manifest.yaml", failures);
-
-  // Consistency guard — must be in sources/ and declare app_type: source
-  if (!parsedFiles.manifest.app_type || parsedFiles.manifest.app_type !== "source") {
-    failures.push(`manifest.yaml app_type must be "source" for apps in sources/ (got: "${parsedFiles.manifest.app_type ?? "undefined"}")`);
-  }
-
-  // Pass 2: source-specific schema
-  validateAgainstSchema(loadSchema(SOURCE_SCHEMA_FILES.manifest), parsedFiles.manifest, "manifest.yaml", failures);
-
-  if (parsedFiles.auth) validateAgainstSchema(loadSchema(SOURCE_SCHEMA_FILES.auth), parsedFiles.auth, "auth.yaml", failures);
-  if (parsedFiles.webhook) validateAgainstSchema(loadSchema(SOURCE_SCHEMA_FILES.webhook), parsedFiles.webhook, "webhook.yaml", failures);
-  if (parsedFiles.polling) validateAgainstSchema(loadSchema(SOURCE_SCHEMA_FILES.polling), parsedFiles.polling, "polling.yaml", failures);
-  if (parsedFiles.mapping) validateAgainstSchema(loadSchema(SOURCE_SCHEMA_FILES.mapping), parsedFiles.mapping, "mapping.yaml", failures);
-
-  for (const fixturePath of [parsedFiles.webhook?.fixturePath, parsedFiles.polling?.fixturePath]) {
-    if (!fixturePath) continue;
-    if (!fs.existsSync(path.join(appPath, fixturePath))) {
-      failures.push(`Missing fixture ${fixturePath}`);
-    }
-  }
-
-  const routes = parsedFiles.mapping?.routes ?? [];
-  if (routes.length === 0) {
-    failures.push(`mapping.yaml must define at least one canonical route`);
-  }
-  routes.forEach((route, idx) => {
-    if (!CANONICAL_ROUTE_PATTERN.test(route.canonicalRoute ?? "")) {
-      failures.push(`mapping.yaml routes[${idx}].canonicalRoute must use dot-separated canonical form`);
-    }
-  });
-
-  checkSecrets(parsedFiles, failures);
-  return failures;
-};
-
-const validateDestination = (appPath) => {
-  const failures = [];
-  const parsedFiles = {};
-  const appName = path.basename(appPath);
-
+  // manifest.yaml
   const manifestPath = path.join(appPath, "manifest.yaml");
   if (!fs.existsSync(manifestPath)) {
     failures.push(`${appName} is missing manifest.yaml`);
@@ -222,66 +160,168 @@ const validateDestination = (appPath) => {
     failures.push(`manifest.yaml could not be parsed: ${error.message}`);
     return failures;
   }
+  validateAgainstSchema(loadSchema(SCHEMA_FILES.baseManifest), parsedFiles.manifest, "manifest.yaml", failures);
 
-  if (!fs.existsSync(path.join(appPath, "README.md"))) {
-    failures.push(`${appName} is missing README.md`);
-  }
-
-  // Pass 1: base schema
-  validateAgainstSchema(loadSchema(DESTINATION_SCHEMA_FILES.base), parsedFiles.manifest, "manifest.yaml", failures);
-
-  // Consistency guard
-  if (!parsedFiles.manifest.app_type || parsedFiles.manifest.app_type !== "destination") {
-    failures.push(`manifest.yaml app_type must be "destination" for apps in destinations/ (got: "${parsedFiles.manifest.app_type ?? "undefined"}")`);
-  }
-
-  // Pass 2: destination-specific schema
-  validateAgainstSchema(loadSchema(DESTINATION_SCHEMA_FILES.manifest), parsedFiles.manifest, "manifest.yaml", failures);
-
-  // Auth file
+  // auth.yaml — always required
   const authPath = path.join(appPath, "auth.yaml");
   if (!fs.existsSync(authPath)) {
     failures.push(`${appName} is missing auth.yaml`);
   } else {
     try {
       parsedFiles.auth = readConfigFile(authPath);
-      validateAgainstSchema(loadSchema(DESTINATION_SCHEMA_FILES.auth), parsedFiles.auth, "auth.yaml", failures);
+      validateAgainstSchema(loadSchema(SCHEMA_FILES.auth), parsedFiles.auth, "auth.yaml", failures);
     } catch (error) {
-      failures.push(`auth.yaml: ${error.message}`);
+      failures.push(`auth.yaml could not be parsed: ${error.message}`);
     }
   }
 
-  // Destinations file
-  const destinationsFileName = parsedFiles.manifest?.files?.destinations ?? "destinations.yaml";
-  const destinationsPath = path.join(appPath, destinationsFileName);
-  if (!fs.existsSync(destinationsPath)) {
-    failures.push(`${appName} is missing ${destinationsFileName}`);
-  } else {
-    try {
-      parsedFiles.destinations = readConfigFile(destinationsPath);
-      if (!Array.isArray(parsedFiles.destinations?.destinations)) {
-        failures.push(`${destinationsFileName} must define a top-level "destinations" array`);
+  const capabilities = Array.isArray(parsedFiles.manifest?.capabilities)
+    ? parsedFiles.manifest.capabilities
+    : [];
+
+  // Unknown capability check
+  for (const cap of capabilities) {
+    if (!KNOWN_CAPABILITIES.has(cap)) {
+      failures.push(`manifest.yaml capabilities contains unknown value "${cap}" (allowed: source, destination)`);
+    }
+  }
+
+  // Strategy-capability compatibility
+  if (parsedFiles.auth?.strategy === "webhook_url" && !capabilities.includes("destination")) {
+    failures.push(`auth.yaml strategy "webhook_url" is only valid for apps with "destination" capability`);
+  }
+
+  // Capability presence + orphan checks (app root only)
+  for (const cap of ["source", "destination"]) {
+    const capDirPath = path.join(appPath, cap);
+    const capDeclared = capabilities.includes(cap);
+    const capDirExists = fs.existsSync(capDirPath) && fs.statSync(capDirPath).isDirectory();
+    if (capDeclared && !capDirExists) {
+      failures.push(`manifest.yaml declares capability "${cap}" but ${cap}/ directory is missing`);
+    }
+    if (!capDeclared && capDirExists) {
+      failures.push(`${cap}/ directory exists but "${cap}" is not listed in manifest.yaml capabilities`);
+    }
+  }
+
+  // source/ validation
+  if (capabilities.includes("source")) {
+    const sourcePath = path.join(appPath, "source");
+    const hasWebhook = fs.existsSync(path.join(sourcePath, "webhook.yaml"));
+    const hasPolling = fs.existsSync(path.join(sourcePath, "polling.yaml"));
+
+    if (!hasWebhook && !hasPolling) {
+      failures.push(`source/ must contain at least one of webhook.yaml or polling.yaml`);
+    }
+
+    if (hasWebhook) {
+      try {
+        parsedFiles.sourceWebhook = readConfigFile(path.join(sourcePath, "webhook.yaml"));
+        validateAgainstSchema(
+          loadSchema(SCHEMA_FILES.sourceWebhook),
+          parsedFiles.sourceWebhook,
+          "source/webhook.yaml",
+          failures,
+        );
+        const fixturePath = parsedFiles.sourceWebhook?.fixturePath;
+        if (fixturePath && !fs.existsSync(path.join(sourcePath, fixturePath))) {
+          failures.push(`source/webhook.yaml: missing fixture ${fixturePath}`);
+        }
+      } catch (error) {
+        failures.push(`source/webhook.yaml could not be parsed: ${error.message}`);
       }
-    } catch (error) {
-      failures.push(`${destinationsFileName} could not be parsed: ${error.message}`);
     }
-  }
 
-  // Delivery file (free-form name — referenced by manifest.files.delivery)
-  const deliveryFileName = parsedFiles.manifest?.files?.delivery;
-  if (!deliveryFileName) {
-    failures.push(`manifest.yaml files.delivery is required`);
-  } else {
-    const deliveryPath = path.join(appPath, deliveryFileName);
-    if (!fs.existsSync(deliveryPath)) {
-      failures.push(`${appName} is missing ${deliveryFileName} (referenced by manifest.yaml files.delivery)`);
+    if (hasPolling) {
+      try {
+        parsedFiles.sourcePolling = readConfigFile(path.join(sourcePath, "polling.yaml"));
+        validateAgainstSchema(
+          loadSchema(SCHEMA_FILES.sourcePolling),
+          parsedFiles.sourcePolling,
+          "source/polling.yaml",
+          failures,
+        );
+        const fixturePath = parsedFiles.sourcePolling?.fixturePath;
+        if (fixturePath && !fs.existsSync(path.join(sourcePath, fixturePath))) {
+          failures.push(`source/polling.yaml: missing fixture ${fixturePath}`);
+        }
+      } catch (error) {
+        failures.push(`source/polling.yaml could not be parsed: ${error.message}`);
+      }
+    }
+
+    const mappingPath = path.join(sourcePath, "mapping.yaml");
+    if (!fs.existsSync(mappingPath)) {
+      failures.push(`source/ is missing mapping.yaml`);
     } else {
       try {
-        parsedFiles.delivery = readConfigFile(deliveryPath);
-        validateAgainstSchema(loadSchema(DESTINATION_SCHEMA_FILES.delivery), parsedFiles.delivery, deliveryFileName, failures);
+        parsedFiles.sourceMapping = readConfigFile(mappingPath);
+        validateAgainstSchema(
+          loadSchema(SCHEMA_FILES.sourceMapping),
+          parsedFiles.sourceMapping,
+          "source/mapping.yaml",
+          failures,
+        );
+        const routes = parsedFiles.sourceMapping?.routes ?? [];
+        routes.forEach((route, idx) => {
+          if (!CANONICAL_ROUTE_PATTERN.test(route.canonicalRoute ?? "")) {
+            failures.push(
+              `source/mapping.yaml routes[${idx}].canonicalRoute must use dot-separated canonical form`,
+            );
+          }
+        });
       } catch (error) {
-        failures.push(`${deliveryFileName}: ${error.message}`);
+        failures.push(`source/mapping.yaml could not be parsed: ${error.message}`);
       }
+    }
+  }
+
+  // destination/ validation
+  if (capabilities.includes("destination")) {
+    const destPath = path.join(appPath, "destination");
+    let targetIds = [];
+
+    const targetsPath = path.join(destPath, "targets.yaml");
+    if (!fs.existsSync(targetsPath)) {
+      failures.push(`destination/ is missing targets.yaml`);
+    } else {
+      try {
+        parsedFiles.destinationTargets = readConfigFile(targetsPath);
+        if (!Array.isArray(parsedFiles.destinationTargets?.targets)) {
+          failures.push(`destination/targets.yaml must define a top-level "targets" array`);
+        } else {
+          targetIds = parsedFiles.destinationTargets.targets.map((t) => t.id).filter(Boolean);
+        }
+      } catch (error) {
+        failures.push(`destination/targets.yaml could not be parsed: ${error.message}`);
+      }
+    }
+
+    const deliveryPath = path.join(destPath, "webhook.yaml");
+    if (!fs.existsSync(deliveryPath)) {
+      failures.push(`destination/ is missing webhook.yaml`);
+    } else {
+      try {
+        parsedFiles.destinationDelivery = readConfigFile(deliveryPath);
+        validateAgainstSchema(
+          loadSchema(SCHEMA_FILES.destinationDelivery),
+          parsedFiles.destinationDelivery,
+          "destination/webhook.yaml",
+          failures,
+        );
+        const targetId = parsedFiles.destinationDelivery?.target_id;
+        if (targetId && !targetIds.includes(targetId)) {
+          failures.push(
+            `destination/webhook.yaml target_id "${targetId}" not found in destination/targets.yaml`,
+          );
+        }
+      } catch (error) {
+        failures.push(`destination/webhook.yaml could not be parsed: ${error.message}`);
+      }
+    }
+
+    if (!fs.existsSync(path.join(destPath, "fixtures", "test-message.json"))) {
+      failures.push(`destination/fixtures/test-message.json is missing`);
     }
   }
 
@@ -289,21 +329,14 @@ const validateDestination = (appPath) => {
   return failures;
 };
 
-const sourceDirectories = collectAppDirectories(path.join(appRepoRoot, "apps"), "source");
-const destinationDirectories = collectAppDirectories(path.join(appRepoRoot, "apps"), "destination");
+// Main
+const appDirectories = collectApps(appRepoRoot);
 const failures = [];
 let totalApps = 0;
 
-for (const appPath of sourceDirectories) {
-  totalApps += 1;
-  for (const failure of validateSource(appPath)) {
-    failures.push(`${path.basename(appPath)}: ${failure}`);
-  }
-}
-
-for (const appPath of destinationDirectories) {
-  totalApps += 1;
-  for (const failure of validateDestination(appPath)) {
+for (const appPath of appDirectories) {
+  totalApps++;
+  for (const failure of validateApp(appPath)) {
     failures.push(`${path.basename(appPath)}: ${failure}`);
   }
 }
