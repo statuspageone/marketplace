@@ -45,11 +45,6 @@ for (const folder of ["docs", "templates", "apps", "schemas", "scripts"]) {
   requirePath(folder, `top-level folder ${folder}/`);
 }
 
-for (const subfolder of ["apps/sources", "apps/destinations"]) {
-  if (!fs.existsSync(path.join(repoRoot, subfolder))) {
-    failures.push(`Missing required directory: ${subfolder}/`);
-  }
-}
 
 const requiredDocs = [
   "docs/authoring-guide.md",

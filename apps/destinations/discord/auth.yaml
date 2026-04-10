@@ -1,4 +1,0 @@
-strategy: webhook_url
-field: webhook_url
-label: Discord Webhook URL
-pattern: ^https://discord\.com/api/webhooks/\d+/[\w-]+$
