@@ -1,11 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Source Auth",
+  "title": "App Auth",
   "type": "object",
   "required": ["strategy"],
   "properties": {
-    "strategy": { "type": "string", "enum": ["oauth2", "apiKey", "none"] },
-    "oauth2": {
+    "strategy": {
+      "type": "string",
+      "enum": ["apiKey", "oauth", "bearer", "webhook_url", "none"]
+    },
+    "apiKey": {
+      "type": "object",
+      "required": ["headerName", "envVar"],
+      "properties": {
+        "headerName": { "type": "string" },
+        "envVar": { "type": "string" }
+      }
+    },
+    "oauth": {
       "type": "object",
       "required": ["authorizationUrl", "tokenUrl", "scopes", "clientIdEnvVar", "clientSecretEnvVar"],
       "properties": {
@@ -16,12 +27,20 @@
         "clientSecretEnvVar": { "type": "string" }
       }
     },
-    "apiKey": {
+    "bearer": {
       "type": "object",
-      "required": ["headerName", "envVar"],
+      "required": ["envVar"],
       "properties": {
-        "headerName": { "type": "string" },
         "envVar": { "type": "string" }
+      }
+    },
+    "webhook_url": {
+      "type": "object",
+      "required": ["field", "label", "pattern"],
+      "properties": {
+        "field": { "type": "string" },
+        "label": { "type": "string" },
+        "pattern": { "type": "string" }
       }
     }
   }

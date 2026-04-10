@@ -2,9 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Destination Delivery",
   "type": "object",
-  "required": ["destination_id", "http", "success_codes"],
+  "required": ["target_id", "http", "success_codes"],
   "properties": {
-    "destination_id": { "type": "string" },
+    "target_id": { "type": "string" },
     "http": {
       "type": "object",
       "required": ["method", "url", "body_type", "body_template"],

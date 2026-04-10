@@ -2,20 +2,24 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Source Polling",
   "type": "object",
-  "required": ["endpoint", "itemsPath", "cursorField", "pagination", "fixturePath"],
+  "required": ["endpoint", "pagination", "fixturePath"],
   "properties": {
     "endpoint": { "type": "string" },
-    "itemsPath": { "type": "string" },
-    "cursorField": { "type": "string" },
+    "method": { "type": "string", "enum": ["GET", "POST"] },
     "pagination": {
       "type": "object",
-      "required": ["type", "nextCursorPath"],
+      "required": ["cursorField"],
       "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["cursor", "page", "offset"]
-        },
-        "nextCursorPath": { "type": "string" }
+        "cursorField": { "type": "string" },
+        "pageSize": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "backfill": {
+      "type": "object",
+      "required": ["supported"],
+      "properties": {
+        "supported": { "type": "boolean" },
+        "maxLookbackDays": { "type": "integer", "minimum": 1 }
       }
     },
     "fixturePath": { "type": "string" }
