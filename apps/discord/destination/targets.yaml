@@ -1,0 +1,13 @@
+targets:
+  - id: webhook
+    name: Discord Channel Alert
+    description: Post monitor status updates to a Discord channel
+    icon: message-square
+    config_fields:
+      - key: message_template
+        label: Message Template
+        type: textarea
+        placeholder: "🚨 **{{monitor.name}}** is {{event.status}}\nTime: {{event.timestamp}}"
+        required: true
+        default: "Monitor **{{monitor.name}}** changed from {{event.previous_status}} to {{event.status}}"
+        help: Use {{variable}} for dynamic values. Supports Markdown formatting.
