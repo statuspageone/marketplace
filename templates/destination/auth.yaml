@@ -1,5 +1,6 @@
-# Choose one strategy: webhook_url | bearer | none
+# Choose one strategy: webhook_url | bearer | apiKey | oauth | none
 strategy: webhook_url
-field: webhook_url
-label: Webhook URL
-# pattern: ^https://example\.com/webhooks/.*$
+webhook_url:
+  field: webhook_url
+  label: Webhook URL
+  # pattern: ^https://example\.com/webhooks/.*$

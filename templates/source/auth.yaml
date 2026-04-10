@@ -1,8 +1,8 @@
-# Authentication strategy - one of: oauth2, apiKey, none
-strategy: oauth2
+# Authentication strategy - one of: oauth, apiKey, bearer, webhook_url, none
+strategy: oauth
 
-# OAuth2 configuration
-oauth2:
+# OAuth configuration
+oauth:
   authorizationUrl: https://example.com/oauth/authorize
   tokenUrl: https://example.com/oauth/token
   scopes:

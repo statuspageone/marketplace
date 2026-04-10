@@ -1,0 +1,15 @@
+# Webhook subscription endpoint
+subscriptionUrl: https://api.example.com/webhooks
+
+# Events to subscribe to
+events:
+  - incident.created
+
+# Optional: HMAC signature verification
+# signature:
+#   algorithm: hmac-sha256
+#   header: X-Example-Signature
+#   secretEnvVar: SP1_EXAMPLE_WEBHOOK_SECRET
+
+# Path to fixture file (relative to source/)
+fixturePath: fixtures/webhook-event.json

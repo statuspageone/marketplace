@@ -1,4 +1,4 @@
-destinations:
+targets:
   - id: webhook
     name: Example Alert
     description: Post monitor status updates to Example Service

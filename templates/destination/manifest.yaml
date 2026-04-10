@@ -2,11 +2,6 @@ slug: example-destination
 name: Example Destination
 description: Send alerts from StatusPageOne to Example Service
 documentationUrl: https://docs.example.com/webhooks
-app_type: destination
 version: 1.0.0
 capabilities:
-  - webhook
-files:
-  auth: auth.yaml
-  destinations: destinations.yaml
-  delivery: destination-webhook.yaml
+  - destination

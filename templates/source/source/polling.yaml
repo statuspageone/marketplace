@@ -1,0 +1,18 @@
+# API endpoint to poll for events
+endpoint: https://api.example.com/incidents
+
+# Optional: HTTP method (default: GET)
+# method: GET
+
+# Pagination configuration
+pagination:
+  cursorField: updated_at
+  # pageSize: 100
+
+# Optional: backfill configuration
+# backfill:
+#   supported: true
+#   maxLookbackDays: 30
+
+# Path to fixture file (relative to source/)
+fixturePath: fixtures/polling-page.json

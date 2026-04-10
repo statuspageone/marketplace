@@ -1,4 +1,4 @@
-destination_id: webhook
+target_id: webhook
 http:
   method: POST
   url: "{{installation.webhook_url}}"
