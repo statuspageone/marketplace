@@ -1,0 +1,13 @@
+{
+  "type": "solarwinds-npm.alert.open",
+  "title": "SolarWinds interface saturation",
+  "description": "Network interface utilization crossed threshold",
+  "occurred_at": "2026-04-24T12:20:00Z",
+  "source_url": "https://solarwinds.example.com/Orion/NetPerfMon/ActiveAlertDetails.aspx?NetObject=AAT:555",
+  "resource": {
+    "id": "sw-alert-555",
+    "name": "interface-saturation",
+    "service": "network",
+    "environment": "production"
+  }
+}

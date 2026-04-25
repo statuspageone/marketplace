@@ -1,0 +1,5 @@
+subscriptionUrl: https://documentation.solarwinds.com/en/success_center/pingdom/content/topics/integrations/webhooks.htm
+events:
+  - pingdom.check.down
+  - pingdom.check.up
+fixturePath: fixtures/webhook-event.json

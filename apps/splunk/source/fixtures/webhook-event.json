@@ -1,0 +1,13 @@
+{
+  "type": "splunk.alert.firing",
+  "title": "Splunk error spike",
+  "description": "Error count exceeded alert threshold",
+  "occurred_at": "2026-04-24T12:16:00Z",
+  "source_url": "https://splunk.example.com/en-US/app/search/alerts/splunk-error-spike",
+  "resource": {
+    "id": "splunk-alert-111",
+    "name": "error-spike",
+    "service": "search",
+    "environment": "production"
+  }
+}

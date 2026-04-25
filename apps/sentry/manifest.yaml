@@ -1,0 +1,7 @@
+slug: sentry
+name: Sentry
+description: Webhook-first source app for Sentry issue and metric alert notifications.
+documentationUrl: https://docs.sentry.io/product/integrations/notification-incidents/webhooks/
+version: 1.0.0
+capabilities:
+  - source

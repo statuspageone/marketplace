@@ -1,0 +1,5 @@
+subscriptionUrl: https://docs.sentry.io/product/integrations/notification-incidents/webhooks/
+events:
+  - sentry.issue.open
+  - sentry.issue.resolved
+fixturePath: fixtures/webhook-event.json

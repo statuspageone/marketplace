@@ -1,0 +1,13 @@
+{
+  "type": "signalfx.detector.open",
+  "title": "SignalFx latency detector",
+  "description": "Latency detector breached its configured threshold",
+  "occurred_at": "2026-04-24T12:19:00Z",
+  "source_url": "https://app.signalfx.com/#/detector/sfx-detector-444",
+  "resource": {
+    "id": "sfx-detector-444",
+    "name": "latency-detector",
+    "service": "api",
+    "environment": "production"
+  }
+}

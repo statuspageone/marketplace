@@ -1,0 +1,5 @@
+subscriptionUrl: https://docs.splunk.com/Documentation/Splunk/latest/Alert/Webhooks
+events:
+  - splunk.alert.firing
+  - splunk.alert.resolved
+fixturePath: fixtures/webhook-event.json

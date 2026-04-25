@@ -1,0 +1,7 @@
+slug: solarwinds-npm
+name: SolarWinds NPM
+description: Webhook-first source app for SolarWinds NPM alert notifications.
+documentationUrl: https://documentation.solarwinds.com/en/success_center/orionplatform/content/core-configure-a-webhook-notification-in-the-alert-manager.htm
+version: 1.0.0
+capabilities:
+  - source

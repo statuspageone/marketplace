@@ -1,0 +1,13 @@
+{
+  "type": "pingdom.check.down",
+  "title": "Pingdom API endpoint down",
+  "description": "Health check failed from multiple regions",
+  "occurred_at": "2026-04-24T12:17:00Z",
+  "source_url": "https://my.pingdom.com/app/reports/uptime#check=222",
+  "resource": {
+    "id": "pingdom-check-222",
+    "name": "api-health",
+    "service": "api",
+    "environment": "production"
+  }
+}

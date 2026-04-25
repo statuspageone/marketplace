@@ -1,0 +1,5 @@
+subscriptionUrl: https://help.splunk.com/en/splunk-observability-cloud/create-alerts-detectors-and-service-level-objectives/alerts-and-detectors/create-detectors-to-trigger-alerts
+events:
+  - signalfx.detector.open
+  - signalfx.detector.resolved
+fixturePath: fixtures/webhook-event.json

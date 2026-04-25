@@ -1,0 +1,7 @@
+slug: pingdom
+name: Pingdom
+description: Webhook-first source app for Pingdom check state notifications.
+documentationUrl: https://documentation.solarwinds.com/en/success_center/pingdom/content/topics/integrations/webhooks.htm
+version: 1.0.0
+capabilities:
+  - source

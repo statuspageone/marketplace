@@ -1,0 +1,7 @@
+slug: splunk
+name: Splunk
+description: Webhook-first source app for Splunk alert notifications.
+documentationUrl: https://docs.splunk.com/Documentation/Splunk/latest/Alert/Webhooks
+version: 1.0.0
+capabilities:
+  - source
