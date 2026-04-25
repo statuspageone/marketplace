@@ -1,8 +1,0 @@
-endpoint: https://api.notifique.dev/v1/webhooks/deliveries
-pagination:
-  cursorField: createdAt
-  pageSize: 20
-backfill:
-  supported: true
-  maxLookbackDays: 30
-fixturePath: fixtures/polling-page.json

@@ -298,13 +298,13 @@ fs.cpSync(path.join(smokeRoot, "schemas"), path.join(templateValidationRoot, "sc
 fs.cpSync(sourceTemplateRoot, path.join(templateValidationRoot, "apps", "template-provider"), { recursive: true });
 assertSuccess(runValidator(templateValidationRoot), "source template copy");
 
-// 11. Real apps pass validation — asserts on exact count so this fails before apps are migrated
+// 12. Real apps pass validation — keep this count in sync with checked-in example apps
 const realAppsResult = runValidator(smokeRoot);
-assertSuccess(realAppsResult, "all real apps (discord + notifique)");
+assertSuccess(realAppsResult, "all real apps");
 assert.match(
   realAppsResult.stdout,
-  /PASS \(2 apps\)/,
-  "validator should report exactly 2 apps (discord + notifique)",
+  /PASS \(0 apps\)/,
+  "validator should report exactly 0 real apps after removing the sample apps",
 );
 
 console.log("PASS");
