@@ -1,0 +1,59 @@
+events:
+  - sourceEvent: monitor.open
+    description: Axiom monitor opened and should create an active normalized source event.
+    fieldMappings:
+      provider:
+        literal: axiom
+      provider_event_type:
+        sourcePath: type
+      status:
+        literal: open
+      severity:
+        literal: high
+      title:
+        sourcePath: event.title
+      description:
+        sourcePath: event.body
+      resource_type:
+        literal: monitor
+      resource_id:
+        sourcePath: event.monitorID
+      resource_name:
+        sourcePath: event.title
+      service_name:
+        sourcePath: event.matchedEvent.service
+      environment:
+        sourcePath: event.matchedEvent.environment
+      source_url:
+        sourcePath: event.sourceURL
+      occurred_at:
+        sourcePath: event.timestamp
+  - sourceEvent: monitor.resolved
+    description: Axiom monitor resolved and should create a resolved normalized source event.
+    fieldMappings:
+      provider:
+        literal: axiom
+      provider_event_type:
+        sourcePath: type
+      status:
+        literal: resolved
+      severity:
+        literal: info
+      title:
+        sourcePath: event.title
+      description:
+        sourcePath: event.body
+      resource_type:
+        literal: monitor
+      resource_id:
+        sourcePath: event.monitorID
+      resource_name:
+        sourcePath: event.title
+      service_name:
+        sourcePath: event.matchedEvent.service
+      environment:
+        sourcePath: event.matchedEvent.environment
+      source_url:
+        sourcePath: event.sourceURL
+      occurred_at:
+        sourcePath: event.timestamp

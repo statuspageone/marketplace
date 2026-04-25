@@ -1,0 +1,26 @@
+{
+  "type": "monitor.open",
+  "action": "Open",
+  "event": {
+    "monitorID": "mon_redacted_123",
+    "body": "Current value of 57347 is above the threshold value of 0",
+    "description": "Error rate monitor",
+    "timestamp": "2026-04-24T12:05:00Z",
+    "title": "Checkout error rate",
+    "value": 57347,
+    "matchedEvent": {
+      "service": "checkout",
+      "environment": "production",
+      "host": "checkout-api-01"
+    },
+    "groupKeys": [
+      "service",
+      "environment"
+    ],
+    "groupValues": [
+      "checkout",
+      "production"
+    ],
+    "sourceURL": "https://app.axiom.co/acme/monitors/mon_redacted_123"
+  }
+}

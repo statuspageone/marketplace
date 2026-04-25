@@ -1,0 +1,5 @@
+subscriptionUrl: https://app.axiom.co
+events:
+  - monitor.open
+  - monitor.resolved
+fixturePath: fixtures/webhook-event.json

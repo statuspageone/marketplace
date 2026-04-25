@@ -303,8 +303,8 @@ const realAppsResult = runValidator(smokeRoot);
 assertSuccess(realAppsResult, "all real apps");
 assert.match(
   realAppsResult.stdout,
-  /PASS \(0 apps\)/,
-  "validator should report exactly 0 real apps after removing the sample apps",
+  /PASS \(1 apps\)/,
+  "validator should report exactly 1 real app after adding the Axiom reference app",
 );
 
 console.log("PASS");
