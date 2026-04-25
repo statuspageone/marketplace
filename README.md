@@ -6,31 +6,23 @@ Public app-authoring repository for StatuspageOne marketplace integrations.
 
 **Source apps** (inbound event providers):
 
-1. Copy `templates/source` into `apps/sources/<provider-slug>`.
+1. Copy `templates/source` into `apps/<provider-slug>`.
 2. Replace placeholder YAML metadata, auth config, fixtures, and mappings.
 3. Run `pnpm validate` from this repository.
 4. Open a pull request with only sanitized examples and documentation.
 
 **Destination apps** (outbound alert targets):
 
-1. Copy `templates/destination` into `apps/destinations/<your-slug>`.
-2. Edit `manifest.yaml`, `auth.yaml`, `destinations.yaml`, and the delivery file.
+1. Copy `templates/destination` into `apps/<your-slug>`.
+2. Edit `manifest.yaml`, `auth.yaml`, `destination/targets.yaml`, and the delivery file.
 3. Run `pnpm validate` from this repository.
 4. Open a pull request with only sanitized examples and documentation.
 
-## Documentation
-
-- [Authoring Guide](docs/authoring-guide.md)
-- [App Contract](docs/app-contract.md)
-- [Security And Redaction](docs/security-and-redaction.md)
-- [Review Checklist](docs/review-checklist.md)
-
 ## Repository Layout
 
-- `docs/` contributor documentation and review guidance
+- `README.md` contributor quickstart and repository overview
 - `templates/` starter app templates (source and destination)
-- `apps/sources/` submitted source app definitions
-- `apps/destinations/` submitted destination app definitions
+- `apps/` submitted app definitions, one folder per app slug
 - `schemas/` machine-readable JSON schemas
 - `scripts/` local validation and repo checks
 

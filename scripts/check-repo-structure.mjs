@@ -41,40 +41,18 @@ const requireFileContains = (relativePath, expectedText, description) => {
 requirePath("README.md");
 requirePackageScript("validate");
 
-for (const folder of ["docs", "templates", "apps", "schemas", "scripts"]) {
+for (const folder of ["templates", "apps", "schemas", "scripts"]) {
   requirePath(folder, `top-level folder ${folder}/`);
 }
-
-
-const requiredDocs = [
-  "docs/authoring-guide.md",
-  "docs/app-contract.md",
-  "docs/security-and-redaction.md",
-  "docs/review-checklist.md",
-];
 
 const requiredMetaFiles = [
   ".github/workflows/validate-apps.yml",
   ".github/pull_request_template.md",
 ];
 
-for (const docPath of requiredDocs) {
-  requirePath(docPath);
-}
-
 for (const metaFilePath of requiredMetaFiles) {
   requirePath(metaFilePath);
 }
-
-for (const docLink of requiredDocs) {
-  requireFileContains("README.md", docLink, `README.md must link to ${docLink}`);
-}
-
-requireFileContains(
-  "docs/security-and-redaction.md",
-  "Do not include secrets or real customer data.",
-  "security-and-redaction.md must explicitly forbid secrets and real customer data",
-);
 
 requireFileContains("README.md", "pnpm validate", "README.md must mention local validation with pnpm validate");
 requireFileContains("README.md", "pull request", "README.md must describe pull request expectations");
