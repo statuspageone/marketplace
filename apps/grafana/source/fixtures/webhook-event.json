@@ -1,0 +1,13 @@
+{
+  "type": "grafana.alert.firing",
+  "title": "Grafana error budget burn",
+  "description": "Burn rate is above the configured threshold",
+  "occurred_at": "2026-04-24T12:14:00Z",
+  "source_url": "https://grafana.example.com/alerting/alerts/grafana-burn-rate",
+  "resource": {
+    "id": "grafana-alert-654",
+    "name": "burn-rate",
+    "service": "edge",
+    "environment": "production"
+  }
+}

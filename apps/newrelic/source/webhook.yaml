@@ -1,0 +1,5 @@
+subscriptionUrl: https://docs.newrelic.com/docs/alerts/get-notified/webhooks/
+events:
+  - newrelic.incident.open
+  - newrelic.incident.resolved
+fixturePath: fixtures/webhook-event.json

@@ -1,0 +1,5 @@
+subscriptionUrl: https://grafana.com/docs/grafana/latest/alerting/configure-notifications/manage-contact-points/integrations/configure-webhook-notifier/
+events:
+  - grafana.alert.firing
+  - grafana.alert.resolved
+fixturePath: fixtures/webhook-event.json

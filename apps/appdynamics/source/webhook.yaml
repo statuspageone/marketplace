@@ -1,0 +1,5 @@
+subscriptionUrl: https://docs.appdynamics.com/
+events:
+  - appdynamics.event.open
+  - appdynamics.event.resolved
+fixturePath: fixtures/webhook-event.json

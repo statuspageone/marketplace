@@ -1,0 +1,7 @@
+slug: appdynamics
+name: AppDynamics
+description: Webhook-first source app for AppDynamics event notifications.
+documentationUrl: https://docs.appdynamics.com/
+version: 1.0.0
+capabilities:
+  - source

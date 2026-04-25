@@ -1,0 +1,5 @@
+subscriptionUrl: https://docs.datadoghq.com/integrations/webhooks/
+events:
+  - datadog.alert.open
+  - datadog.alert.resolved
+fixturePath: fixtures/webhook-event.json

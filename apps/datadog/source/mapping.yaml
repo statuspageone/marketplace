@@ -1,0 +1,31 @@
+events:
+  - sourceEvent: datadog.alert.open
+    fieldMappings:
+      provider: { literal: datadog }
+      provider_event_type: { sourcePath: type }
+      status: { literal: open }
+      severity: { literal: high }
+      title: { sourcePath: title }
+      description: { sourcePath: description }
+      resource_type: { literal: monitor }
+      resource_id: { sourcePath: resource.id }
+      resource_name: { sourcePath: resource.name }
+      service_name: { sourcePath: resource.service }
+      environment: { sourcePath: resource.environment }
+      source_url: { sourcePath: source_url }
+      occurred_at: { sourcePath: occurred_at }
+  - sourceEvent: datadog.alert.resolved
+    fieldMappings:
+      provider: { literal: datadog }
+      provider_event_type: { sourcePath: type }
+      status: { literal: resolved }
+      severity: { literal: info }
+      title: { sourcePath: title }
+      description: { sourcePath: description }
+      resource_type: { literal: monitor }
+      resource_id: { sourcePath: resource.id }
+      resource_name: { sourcePath: resource.name }
+      service_name: { sourcePath: resource.service }
+      environment: { sourcePath: resource.environment }
+      source_url: { sourcePath: source_url }
+      occurred_at: { sourcePath: occurred_at }

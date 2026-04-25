@@ -1,0 +1,5 @@
+subscriptionUrl: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Notify_Users_Alarm_Changes.html
+events:
+  - cloudwatch.alarm.open
+  - cloudwatch.alarm.resolved
+fixturePath: fixtures/webhook-event.json

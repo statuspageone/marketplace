@@ -1,0 +1,13 @@
+{
+  "type": "appdynamics.event.open",
+  "title": "AppDynamics slow transaction",
+  "description": "Checkout transaction latency exceeded threshold",
+  "occurred_at": "2026-04-24T12:15:00Z",
+  "source_url": "https://appdynamics.example.com/controller/#/location=APP_EVENT_VIEWER",
+  "resource": {
+    "id": "appd-event-987",
+    "name": "slow-transaction",
+    "service": "checkout",
+    "environment": "production"
+  }
+}

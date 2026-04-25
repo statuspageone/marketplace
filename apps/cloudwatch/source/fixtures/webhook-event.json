@@ -1,0 +1,13 @@
+{
+  "type": "cloudwatch.alarm.open",
+  "title": "CloudWatch high error rate",
+  "description": "5xx error count crossed the configured threshold",
+  "occurred_at": "2026-04-24T12:11:00Z",
+  "source_url": "https://console.aws.amazon.com/cloudwatch/home#alarmsV2:alarm/high-error-rate",
+  "resource": {
+    "id": "cw-alarm-456",
+    "name": "high-error-rate",
+    "service": "checkout",
+    "environment": "production"
+  }
+}

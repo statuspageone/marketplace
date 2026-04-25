@@ -1,0 +1,13 @@
+{
+  "type": "newrelic.incident.open",
+  "title": "New Relic latency breach",
+  "description": "Latency is above the SLO threshold",
+  "occurred_at": "2026-04-24T12:12:00Z",
+  "source_url": "https://one.newrelic.com/redirect/entity/newrelic-incident-789",
+  "resource": {
+    "id": "nr-incident-789",
+    "name": "checkout-latency",
+    "service": "checkout",
+    "environment": "production"
+  }
+}

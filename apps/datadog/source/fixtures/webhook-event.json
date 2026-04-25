@@ -1,0 +1,13 @@
+{
+  "type": "datadog.alert.open",
+  "title": "Datadog CPU saturation",
+  "description": "CPU above 90% for api hosts",
+  "occurred_at": "2026-04-24T12:10:00Z",
+  "source_url": "https://app.datadoghq.com/monitors/123",
+  "resource": {
+    "id": "dd-monitor-123",
+    "name": "api-cpu",
+    "service": "api",
+    "environment": "production"
+  }
+}

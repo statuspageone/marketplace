@@ -1,0 +1,7 @@
+slug: datadog
+name: Datadog
+description: Webhook-first source app for Datadog monitor alerts.
+documentationUrl: https://docs.datadoghq.com/integrations/webhooks/
+version: 1.0.0
+capabilities:
+  - source

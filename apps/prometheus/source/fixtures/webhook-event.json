@@ -1,0 +1,13 @@
+{
+  "type": "prometheus.alert.firing",
+  "title": "Prometheus pod restarts",
+  "description": "Restart count exceeded threshold",
+  "occurred_at": "2026-04-24T12:13:00Z",
+  "source_url": "https://prometheus.example.com/alerts/prometheus-pod-restarts",
+  "resource": {
+    "id": "prom-alert-321",
+    "name": "pod-restarts",
+    "service": "worker",
+    "environment": "production"
+  }
+}

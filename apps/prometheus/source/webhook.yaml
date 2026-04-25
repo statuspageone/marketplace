@@ -1,0 +1,5 @@
+subscriptionUrl: https://prometheus.io/docs/alerting/latest/configuration/
+events:
+  - prometheus.alert.firing
+  - prometheus.alert.resolved
+fixturePath: fixtures/webhook-event.json

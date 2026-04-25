@@ -1,0 +1,7 @@
+slug: prometheus
+name: Prometheus
+description: Webhook-first source app for Prometheus Alertmanager notifications.
+documentationUrl: https://prometheus.io/docs/alerting/latest/configuration/
+version: 1.0.0
+capabilities:
+  - source
