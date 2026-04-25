@@ -84,20 +84,30 @@ const buildRepo = ({ mutateApp } = {}) => {
       fixturePath: "fixtures/webhook-event.json",
     },
     "source/mapping.yaml": {
-      routes: [
+      events: [
         {
           sourceEvent: "incident.created",
-          canonicalRoute: "incident.created",
-          eventType: "incident",
-          description: "Maps provider incident creation events to the canonical route.",
+          description: "Maps provider incident creation events into the normalized source-event shape.",
+          fieldMappings: {
+            provider: { literal: "demo-provider" },
+            provider_event_type: { literal: "incident.created" },
+            status: { literal: "open" },
+            severity: { literal: "high" },
+            title: { sourcePath: "data.title" },
+            resource_id: { sourcePath: "data.id" },
+            occurred_at: { sourcePath: "data.created_at" },
+          },
         },
       ],
-      fields: [{ sourcePath: "data.id", canonicalField: "incident.id" }],
     },
     "source/fixtures/webhook-event.json": {
       id: "evt_example_redacted",
       type: "incident.created",
-      data: { id: "inc_example_redacted", title: "Example incident" },
+      data: {
+        id: "inc_example_redacted",
+        title: "Example incident",
+        created_at: "2026-03-20T10:00:00Z",
+      },
     },
   };
 
@@ -202,7 +212,29 @@ const badStrategyRoot = buildRepo({
 });
 assertFailure(runValidator(badStrategyRoot), "webhook_url", "webhook_url on source-only app");
 
-// 7. target_id mismatch fails
+// 7. Missing required source field mapping fails
+const missingSourceFieldRoot = buildRepo({
+  mutateApp: ({ appRoot, writeYaml }) => {
+    writeYaml(path.join(appRoot, "source/mapping.yaml"), {
+      events: [
+        {
+          sourceEvent: "incident.created",
+          fieldMappings: {
+            provider: { literal: "demo-provider" },
+            provider_event_type: { literal: "incident.created" },
+            status: { literal: "open" },
+            severity: { literal: "high" },
+            resource_id: { sourcePath: "data.id" },
+            occurred_at: { sourcePath: "data.created_at" },
+          },
+        },
+      ],
+    });
+  },
+});
+assertFailure(runValidator(missingSourceFieldRoot), "title", "missing required source field mapping");
+
+// 8. target_id mismatch fails
 const mismatchRoot = buildRepo({
   mutateApp: ({ appRoot, writeYaml, writeJson }) => {
     writeYaml(path.join(appRoot, "manifest.yaml"), {
@@ -228,7 +260,7 @@ const mismatchRoot = buildRepo({
 });
 assertFailure(runValidator(mismatchRoot), "target_id", "mismatched target_id");
 
-// 8. source template files exist at new locations
+// 9. source template files exist at new locations
 const sourceTemplateFiles = [
   "manifest.yaml",
   "auth.yaml",
@@ -244,7 +276,7 @@ for (const relativePath of sourceTemplateFiles) {
 }
 assertFileContains(path.join(sourceTemplateRoot, "README.md"), "replace|placeholder", "source template README");
 
-// 9. destination template files exist at new locations
+// 10. destination template files exist at new locations
 const destTemplateFiles = [
   "manifest.yaml",
   "auth.yaml",
@@ -257,7 +289,7 @@ for (const relativePath of destTemplateFiles) {
   assertPathExists(path.join(destTemplateRoot, relativePath), `destination template ${relativePath}`);
 }
 
-// 10. Copying source template to apps/ passes validation
+// 11. Copying source template to apps/ passes validation
 const templateValidationRoot = fs.mkdtempSync(path.join(os.tmpdir(), "marketplace-template-"));
 for (const dir of ["apps", "schemas"]) {
   fs.mkdirSync(path.join(templateValidationRoot, dir), { recursive: true });

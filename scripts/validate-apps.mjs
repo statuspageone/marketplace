@@ -18,7 +18,22 @@ const KNOWN_CAPABILITIES = new Set(["source", "destination"]);
 const SECRET_PATTERN =
   /(sk_live_|-----BEGIN|AKIA[0-9A-Z]{16}|xox[baprs]-|ghp_[A-Za-z0-9]{20,}|Bearer\s+[A-Za-z0-9._-]+|password|api[_-]?key|client[_-]?secret)/i;
 const ENV_VAR_PATTERN = /^[A-Z][A-Z0-9_]*$/;
-const CANONICAL_ROUTE_PATTERN = /^[a-z0-9_]+(\.[a-z0-9_]+)+$/;
+const REQUIRED_SOURCE_MAPPING_FIELDS = ["provider", "provider_event_type", "status", "severity", "title", "occurred_at"];
+const OPTIONAL_SOURCE_MAPPING_FIELDS = [
+  "description",
+  "resource_type",
+  "resource_id",
+  "resource_name",
+  "service_name",
+  "environment",
+  "source_url",
+];
+const SOURCE_MAPPING_FIELDS = new Set([
+  ...REQUIRED_SOURCE_MAPPING_FIELDS,
+  ...OPTIONAL_SOURCE_MAPPING_FIELDS,
+]);
+const STATUS_LITERALS = new Set(["open", "acknowledged", "resolved"]);
+const SEVERITY_LITERALS = new Set(["critical", "high", "medium", "low", "info"]);
 
 const args = process.argv.slice(2);
 let appRepoRoot = scriptRoot;
@@ -262,11 +277,43 @@ const validateApp = (appPath) => {
           "source/mapping.yaml",
           failures,
         );
-        const routes = parsedFiles.sourceMapping?.routes ?? [];
-        routes.forEach((route, idx) => {
-          if (!CANONICAL_ROUTE_PATTERN.test(route.canonicalRoute ?? "")) {
+        const events = parsedFiles.sourceMapping?.events ?? [];
+        events.forEach((eventMapping, idx) => {
+          const fieldMappings = eventMapping?.fieldMappings ?? {};
+
+          for (const fieldName of Object.keys(fieldMappings)) {
+            if (!SOURCE_MAPPING_FIELDS.has(fieldName)) {
+              failures.push(
+                `source/mapping.yaml events[${idx}].fieldMappings contains unsupported field "${fieldName}"`,
+              );
+            }
+          }
+
+          for (const requiredField of REQUIRED_SOURCE_MAPPING_FIELDS) {
+            if (!(requiredField in fieldMappings)) {
+              failures.push(
+                `source/mapping.yaml events[${idx}].fieldMappings is missing required field "${requiredField}"`,
+              );
+            }
+          }
+
+          if (!("resource_id" in fieldMappings) && !("resource_name" in fieldMappings)) {
             failures.push(
-              `source/mapping.yaml routes[${idx}].canonicalRoute must use dot-separated canonical form`,
+              `source/mapping.yaml events[${idx}].fieldMappings must define at least one of "resource_id" or "resource_name"`,
+            );
+          }
+
+          const statusLiteral = fieldMappings?.status?.literal;
+          if (statusLiteral && !STATUS_LITERALS.has(statusLiteral)) {
+            failures.push(
+              `source/mapping.yaml events[${idx}].fieldMappings.status.literal must be one of: ${Array.from(STATUS_LITERALS).join(", ")}`,
+            );
+          }
+
+          const severityLiteral = fieldMappings?.severity?.literal;
+          if (severityLiteral && !SEVERITY_LITERALS.has(severityLiteral)) {
+            failures.push(
+              `source/mapping.yaml events[${idx}].fieldMappings.severity.literal must be one of: ${Array.from(SEVERITY_LITERALS).join(", ")}`,
             );
           }
         });

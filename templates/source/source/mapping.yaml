@@ -1,14 +1,22 @@
-# Route mappings: external events → canonical StatuspageOne events
-routes:
+events:
   - sourceEvent: incident.created
-    canonicalRoute: incident.created
-    eventType: incident
     description: Placeholder mapping for a provider incident create event.
-
-# Field mappings: external fields → canonical StatuspageOne fields
-fields:
-  - sourcePath: data.id
-    canonicalField: incident.id
-
-  - sourcePath: data.title
-    canonicalField: incident.title
+    fieldMappings:
+      provider:
+        literal: example-provider
+      provider_event_type:
+        literal: incident.created
+      status:
+        literal: open
+      severity:
+        literal: high
+      title:
+        sourcePath: data.title
+      resource_id:
+        sourcePath: data.id
+      occurred_at:
+        sourcePath: data.createdAt
+      description:
+        sourcePath: data.summary
+      source_url:
+        sourcePath: data.url
