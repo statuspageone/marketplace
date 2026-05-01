@@ -1,6 +1,6 @@
 slug: pingdom
 name: Pingdom
-icon: https://www.pingdom.com/wp-content/uploads/2024/01/cropped-SW_Logo_Stacked_Web_Orange-192x192.png
+icon: https://cdn.brandfetch.io/ideQ3cspzn/w/400/h/400/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1770993286673
 description: Webhook-first source app for Pingdom check state notifications.
 documentationUrl: https://documentation.solarwinds.com/en/success_center/pingdom/content/topics/integrations/webhooks.htm
 version: 1.0.0
