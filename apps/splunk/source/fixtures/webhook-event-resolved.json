@@ -1,16 +1,16 @@
 {
-  "type": "splunk.alert.firing",
+  "type": "splunk.alert.resolved",
   "search_name": "High Error Rate",
   "owner": "admin",
   "app": "search",
   "results_link": "http://splunk.example.com:8000/app/search/search?q=redacted",
-  "trigger_time": "1714900000",
-  "trigger_reason": "Number of Results",
+  "trigger_time": "1714901800",
+  "trigger_reason": "Number of Results - Resolved",
   "alert_severity": "2",
   "result": {
     "host": "web-server-01",
     "source": "/var/log/app/error.log",
     "sourcetype": "app_logs",
-    "error_count": "150"
+    "error_count": "0"
   }
 }

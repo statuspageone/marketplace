@@ -2,30 +2,26 @@ events:
   - sourceEvent: splunk.alert.firing
     fieldMappings:
       provider: { literal: splunk }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: trigger_reason }
       status: { literal: open }
       severity: { literal: high }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: search_name }
+      description: { sourcePath: trigger_reason }
       resource_type: { literal: alert }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_name: { sourcePath: search_name }
+      service_name: { sourcePath: result.host }
+      source_url: { sourcePath: results_link }
+      occurred_at: { sourcePath: trigger_time }
   - sourceEvent: splunk.alert.resolved
     fieldMappings:
       provider: { literal: splunk }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: trigger_reason }
       status: { literal: resolved }
       severity: { literal: info }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: search_name }
+      description: { sourcePath: trigger_reason }
       resource_type: { literal: alert }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_name: { sourcePath: search_name }
+      service_name: { sourcePath: result.host }
+      source_url: { sourcePath: results_link }
+      occurred_at: { sourcePath: trigger_time }
