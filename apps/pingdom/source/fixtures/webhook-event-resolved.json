@@ -1,0 +1,19 @@
+{
+  "type": "pingdom.check.up",
+  "check_id": 1234567,
+  "check_name": "example.com HTTP check",
+  "check_type": "HTTP",
+  "check_params": {
+    "full_url": "https://example.com/health",
+    "hostname": "example.com",
+    "port": 443,
+    "encryption": true
+  },
+  "previous_state": "DOWN",
+  "current_state": "UP",
+  "importance_level": "HIGH",
+  "state_changed_timestamp": 1714901800,
+  "state_changed_utc_time": "Thu, 24 Apr 2026 12:30:00 +0000",
+  "long_description": "HTTP check is responding normally again",
+  "description": "HTTP OK"
+}

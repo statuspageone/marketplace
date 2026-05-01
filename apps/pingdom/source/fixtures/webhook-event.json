@@ -1,13 +1,24 @@
 {
   "type": "pingdom.check.down",
-  "title": "Pingdom API endpoint down",
-  "description": "Health check failed from multiple regions",
-  "occurred_at": "2026-04-24T12:17:00Z",
-  "source_url": "https://my.pingdom.com/app/reports/uptime#check=222",
-  "resource": {
-    "id": "pingdom-check-222",
-    "name": "api-health",
-    "service": "api",
-    "environment": "production"
-  }
+  "check_id": 1234567,
+  "check_name": "example.com HTTP check",
+  "check_type": "HTTP",
+  "check_params": {
+    "full_url": "https://example.com/health",
+    "hostname": "example.com",
+    "port": 443,
+    "encryption": true
+  },
+  "previous_state": "UP",
+  "current_state": "DOWN",
+  "importance_level": "HIGH",
+  "state_changed_timestamp": 1714900000,
+  "state_changed_utc_time": "Thu, 24 Apr 2026 12:00:00 +0000",
+  "long_description": "HTTP Status Code 500 received from example.com",
+  "description": "HTTP Status Code 500",
+  "tags": [
+    { "name": "production", "type": "a" },
+    { "name": "api-team", "type": "u" }
+  ],
+  "first_probe": { "ip": "1.2.3.4", "location": "US East", "status": 500 }
 }
