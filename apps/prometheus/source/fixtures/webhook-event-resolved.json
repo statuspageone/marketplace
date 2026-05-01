@@ -1,21 +1,21 @@
 {
-  "type": "prometheus.alert.firing",
+  "type": "prometheus.alert.resolved",
   "receiver": "statuspageone",
-  "status": "firing",
+  "status": "resolved",
   "alerts": [
     {
-      "status": "firing",
+      "status": "resolved",
       "labels": { "alertname": "HighCPU", "instance": "api-host-01:9100", "severity": "critical", "service": "api", "env": "production" },
-      "annotations": { "description": "CPU above 90% for 5 minutes on api-host-01", "summary": "High CPU usage" },
+      "annotations": { "description": "CPU is back below 90% on api-host-01", "summary": "High CPU usage resolved" },
       "startsAt": "2026-04-24T12:00:00.000Z",
-      "endsAt": "0001-01-01T00:00:00.000Z",
+      "endsAt": "2026-04-24T12:30:00.000Z",
       "generatorURL": "http://prometheus.example.com:9090/graph?g0.expr=cpu_usage+%3E+90",
       "fingerprint": "abc123def456789"
     }
   ],
   "groupLabels": { "alertname": "HighCPU" },
   "commonLabels": { "alertname": "HighCPU", "severity": "critical", "service": "api", "env": "production" },
-  "commonAnnotations": { "description": "CPU above 90% for 5 minutes", "summary": "High CPU usage" },
+  "commonAnnotations": { "description": "CPU is back below 90%", "summary": "High CPU usage resolved" },
   "externalURL": "http://alertmanager.example.com:9093",
   "version": "4",
   "groupKey": "{}:{alertname=\"HighCPU\"}"
