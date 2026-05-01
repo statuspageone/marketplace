@@ -1,5 +1,6 @@
 slug: example-destination
 name: Example Destination
+icon: https://cdn.example.com/icons/example-destination.png
 description: Send alerts from StatusPageOne to Example Service
 documentationUrl: https://docs.example.com/webhooks
 version: 1.0.0

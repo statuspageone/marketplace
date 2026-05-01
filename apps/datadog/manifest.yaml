@@ -1,5 +1,6 @@
 slug: datadog
 name: Datadog
+icon: https://www.datadoghq.com/favicon.ico
 description: Webhook-first source app for Datadog monitor alerts.
 documentationUrl: https://docs.datadoghq.com/integrations/webhooks/
 version: 1.0.0

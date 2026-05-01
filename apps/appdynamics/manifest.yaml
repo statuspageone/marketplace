@@ -1,5 +1,6 @@
 slug: appdynamics
 name: AppDynamics
+icon: https://docs.appdynamics.com/favicon.ico
 description: Webhook-first source app for AppDynamics event notifications.
 documentationUrl: https://docs.appdynamics.com/
 version: 1.0.0

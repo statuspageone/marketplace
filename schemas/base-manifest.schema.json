@@ -2,10 +2,11 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Base Manifest",
   "type": "object",
-  "required": ["slug", "name", "description", "documentationUrl", "version", "capabilities"],
+  "required": ["slug", "name", "icon", "description", "documentationUrl", "version", "capabilities"],
   "properties": {
     "slug": { "type": "string", "pattern": "^[a-z0-9-]+$" },
     "name": { "type": "string" },
+    "icon": { "type": "string" },
     "description": { "type": "string" },
     "documentationUrl": { "type": "string" },
     "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },

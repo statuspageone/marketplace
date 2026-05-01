@@ -1,5 +1,6 @@
 slug: example-provider
 name: Example Provider
+icon: https://cdn.example.com/icons/example-provider.png
 description: Placeholder connector metadata for marketplace contributors.
 documentationUrl: https://example.com/docs/example-provider
 version: 1.0.0

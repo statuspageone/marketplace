@@ -1,5 +1,6 @@
 slug: cloudwatch
 name: Amazon CloudWatch
+icon: https://docs.aws.amazon.com/favicon.ico
 description: Webhook-first source app for Amazon CloudWatch alarm notifications.
 documentationUrl: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Notify_Users_Alarm_Changes.html
 version: 1.0.0

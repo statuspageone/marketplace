@@ -1,5 +1,6 @@
 slug: pingdom
 name: Pingdom
+icon: https://www.pingdom.com/favicon.ico
 description: Webhook-first source app for Pingdom check state notifications.
 documentationUrl: https://documentation.solarwinds.com/en/success_center/pingdom/content/topics/integrations/webhooks.htm
 version: 1.0.0

@@ -1,5 +1,6 @@
 slug: prometheus
 name: Prometheus
+icon: https://prometheus.io/favicon.ico
 description: Webhook-first source app for Prometheus Alertmanager notifications.
 documentationUrl: https://prometheus.io/docs/alerting/latest/configuration/
 version: 1.0.0

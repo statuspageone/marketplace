@@ -62,6 +62,7 @@ const buildRepo = ({ mutateApp } = {}) => {
     "manifest.yaml": {
       slug: "demo-provider",
       name: "Demo Provider",
+      icon: "https://cdn.example.com/icons/demo-provider.png",
       description: "Sanitized example source for validation smoke tests.",
       documentationUrl: "https://example.com/docs",
       version: "1.0.0",
@@ -142,6 +143,7 @@ const missingNameRoot = buildRepo({
     writeYaml(path.join(appRoot, "manifest.yaml"), {
       slug: "demo-provider",
       description: "Missing name field.",
+      icon: "https://cdn.example.com/icons/demo-provider.png",
       documentationUrl: "https://example.com/docs",
       version: "1.0.0",
       capabilities: ["source"],
@@ -173,6 +175,7 @@ const orphanRoot = buildRepo({
     writeYaml(path.join(appRoot, "manifest.yaml"), {
       slug: "demo-provider",
       name: "Demo Provider",
+      icon: "https://cdn.example.com/icons/demo-provider.png",
       description: "Sanitized example.",
       documentationUrl: "https://example.com/docs",
       version: "1.0.0",
@@ -188,6 +191,7 @@ const unknownCapRoot = buildRepo({
     writeYaml(path.join(appRoot, "manifest.yaml"), {
       slug: "demo-provider",
       name: "Demo Provider",
+      icon: "https://cdn.example.com/icons/demo-provider.png",
       description: "Sanitized example.",
       documentationUrl: "https://example.com/docs",
       version: "1.0.0",
@@ -212,7 +216,38 @@ const badStrategyRoot = buildRepo({
 });
 assertFailure(runValidator(badStrategyRoot), "webhook_url", "webhook_url on source-only app");
 
-// 7. Missing required source field mapping fails
+// 7. Missing icon field fails
+const missingIconRoot = buildRepo({
+  mutateApp: ({ appRoot, writeYaml }) => {
+    writeYaml(path.join(appRoot, "manifest.yaml"), {
+      slug: "demo-provider",
+      name: "Demo Provider",
+      description: "Missing icon field.",
+      documentationUrl: "https://example.com/docs",
+      version: "1.0.0",
+      capabilities: ["source"],
+    });
+  },
+});
+assertFailure(runValidator(missingIconRoot), "icon", "missing icon field");
+
+// 8. Invalid icon URL fails
+const invalidIconRoot = buildRepo({
+  mutateApp: ({ appRoot, writeYaml }) => {
+    writeYaml(path.join(appRoot, "manifest.yaml"), {
+      slug: "demo-provider",
+      name: "Demo Provider",
+      icon: "http://example.com/icon.png",
+      description: "Invalid icon URL.",
+      documentationUrl: "https://example.com/docs",
+      version: "1.0.0",
+      capabilities: ["source"],
+    });
+  },
+});
+assertFailure(runValidator(invalidIconRoot), "https", "invalid icon URL");
+
+// 9. Missing required source field mapping fails
 const missingSourceFieldRoot = buildRepo({
   mutateApp: ({ appRoot, writeYaml }) => {
     writeYaml(path.join(appRoot, "source/mapping.yaml"), {
@@ -234,12 +269,13 @@ const missingSourceFieldRoot = buildRepo({
 });
 assertFailure(runValidator(missingSourceFieldRoot), "title", "missing required source field mapping");
 
-// 8. target_id mismatch fails
+// 10. target_id mismatch fails
 const mismatchRoot = buildRepo({
   mutateApp: ({ appRoot, writeYaml, writeJson }) => {
     writeYaml(path.join(appRoot, "manifest.yaml"), {
       slug: "demo-provider",
       name: "Demo Provider",
+      icon: "https://cdn.example.com/icons/demo-provider.png",
       description: "Sanitized example.",
       documentationUrl: "https://example.com/docs",
       version: "1.0.0",
@@ -260,7 +296,7 @@ const mismatchRoot = buildRepo({
 });
 assertFailure(runValidator(mismatchRoot), "target_id", "mismatched target_id");
 
-// 9. source template files exist at new locations
+// 11. source template files exist at new locations
 const sourceTemplateFiles = [
   "manifest.yaml",
   "auth.yaml",
@@ -276,7 +312,7 @@ for (const relativePath of sourceTemplateFiles) {
 }
 assertFileContains(path.join(sourceTemplateRoot, "README.md"), "replace|placeholder", "source template README");
 
-// 10. destination template files exist at new locations
+// 12. destination template files exist at new locations
 const destTemplateFiles = [
   "manifest.yaml",
   "auth.yaml",
@@ -289,7 +325,7 @@ for (const relativePath of destTemplateFiles) {
   assertPathExists(path.join(destTemplateRoot, relativePath), `destination template ${relativePath}`);
 }
 
-// 11. Copying source template to apps/ passes validation
+// 13. Copying source template to apps/ passes validation
 const templateValidationRoot = fs.mkdtempSync(path.join(os.tmpdir(), "marketplace-template-"));
 for (const dir of ["apps", "schemas"]) {
   fs.mkdirSync(path.join(templateValidationRoot, dir), { recursive: true });
@@ -298,7 +334,7 @@ fs.cpSync(path.join(smokeRoot, "schemas"), path.join(templateValidationRoot, "sc
 fs.cpSync(sourceTemplateRoot, path.join(templateValidationRoot, "apps", "template-provider"), { recursive: true });
 assertSuccess(runValidator(templateValidationRoot), "source template copy");
 
-// 12. Real apps pass validation — keep this count in sync with checked-in example apps
+// 14. Real apps pass validation — keep this count in sync with checked-in example apps
 const realAppsResult = runValidator(smokeRoot);
 assertSuccess(realAppsResult, "all real apps");
 assert.match(

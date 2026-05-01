@@ -1,5 +1,6 @@
 slug: splunk
 name: Splunk
+icon: https://www.splunk.com/favicon.ico
 description: Webhook-first source app for Splunk alert notifications.
 documentationUrl: https://docs.splunk.com/Documentation/Splunk/latest/Alert/Webhooks
 version: 1.0.0

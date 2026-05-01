@@ -49,6 +49,19 @@ const readConfigFile = (filePath) => {
   return yaml.load(content, { schema: yaml.SAFE_SCHEMA, json: true });
 };
 
+const isValidHttpsUrl = (value) => {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    return false;
+  }
+
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
 const loadSchema = (schemaFileName) => {
   const schemaPath = path.join(scriptRoot, "schemas", schemaFileName);
   if (!fs.existsSync(schemaPath)) {
@@ -176,6 +189,9 @@ const validateApp = (appPath) => {
     return failures;
   }
   validateAgainstSchema(loadSchema(SCHEMA_FILES.baseManifest), parsedFiles.manifest, "manifest.yaml", failures);
+  if (!isValidHttpsUrl(parsedFiles.manifest?.icon)) {
+    failures.push(`manifest.yaml icon must be a valid https URL`);
+  }
 
   // auth.yaml — always required
   const authPath = path.join(appPath, "auth.yaml");

@@ -1,5 +1,6 @@
 slug: axiom
 name: Axiom
+icon: https://axiom.co/favicon.ico
 description: Webhook-first source app for Axiom monitor notifications.
 documentationUrl: https://axiom.co/docs/monitor-data/custom-webhook-notifier
 version: 1.0.0
