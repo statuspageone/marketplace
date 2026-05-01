@@ -1,0 +1,18 @@
+{
+  "type": "monitor.resolved",
+  "action": "Closed",
+  "event": {
+    "monitorID": "mon_redacted_123",
+    "body": "Value has returned below threshold",
+    "description": "Error rate monitor",
+    "timestamp": "2026-04-24T12:30:00Z",
+    "title": "Checkout error rate",
+    "value": 0,
+    "matchedEvent": {
+      "service": "checkout",
+      "environment": "production",
+      "host": "checkout-api-01"
+    },
+    "sourceURL": "https://app.axiom.co/acme/monitors/mon_redacted_123"
+  }
+}

@@ -1,30 +1,11 @@
 # Axiom
 
-Source app for ingesting Axiom monitor notifications through the Axiom custom webhook notifier.
+Receives monitor alert notifications from Axiom via webhook notifier.
 
 ## Setup
 
-1. In Axiom, open `Monitors` and create or edit a notifier.
-2. Choose `Custom webhook`.
-3. Configure the webhook URL that points to the marketplace webhook endpoint for this installation.
-4. Use a JSON template that includes a top-level `type` field so StatuspageOne can map the event.
+In Axiom go to **Monitors**, open a monitor, and add a **Webhook** notifier pointing to your StatuspageOne installation URL.
 
-Example payload template:
+Axiom sends a JSON payload with a top-level `event` object containing monitor details, matched dimensions, and a `sourceURL` for the alert. The `type` field is set automatically by Axiom: `monitor.open` when the monitor fires and `monitor.resolved` when it recovers.
 
-```json
-{
-  "type": "{{ if eq .Action \"Open\" }}monitor.open{{ else }}monitor.resolved{{ end }}",
-  "action": "{{.Action}}",
-  "event": {
-    "monitorID": "{{.MonitorID}}",
-    "body": "{{.Body}}",
-    "description": "{{.Description}}",
-    "timestamp": "{{.Timestamp}}",
-    "title": "{{.Title}}",
-    "sourceURL": "https://app.axiom.co/your-org-id/monitors/{{.MonitorID}}",
-    "matchedEvent": {{jsonObject .MatchedEvent}}
-  }
-}
-```
-
-Keep all examples sanitized. Do not include real URLs, tokens, or customer data.
+No custom template configuration is required.
