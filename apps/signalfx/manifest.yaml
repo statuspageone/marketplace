@@ -1,8 +1,0 @@
-slug: signalfx
-name: SignalFx
-icon: https://www.splunk.com/favicon.ico
-description: Webhook-first source app for SignalFx detector notifications.
-documentationUrl: https://help.splunk.com/en/splunk-observability-cloud/create-alerts-detectors-and-service-level-objectives/alerts-and-detectors/create-detectors-to-trigger-alerts
-version: 1.0.0
-capabilities:
-  - source
