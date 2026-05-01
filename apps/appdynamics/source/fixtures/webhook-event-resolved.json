@@ -1,13 +1,13 @@
 {
-  "type": "appdynamics.event.open",
+  "type": "appdynamics.event.resolved",
   "app_name": "checkout-service",
   "policy_name": "CPU Health Rule Violation",
   "event_id": "redacted-event-id",
-  "event_type": "POLICY_OPEN_CRITICAL",
+  "event_type": "POLICY_CLOSE_CRITICAL",
   "severity": "CRITICAL",
   "affected_entity_type": "APPLICATION_COMPONENT",
   "affected_entity_name": "checkout-service-tier",
-  "event_summary": "CPU utilization is above 90% on checkout-service-tier",
-  "event_time": "2026-04-24T12:00:00.000+0000",
+  "event_summary": "CPU health rule violation has resolved on checkout-service-tier",
+  "event_time": "2026-04-24T12:30:00.000+0000",
   "deep_link_url": "https://example.saas.appdynamics.com/#location=APP_INCIDENT_DETAIL&id=redacted-event-id"
 }

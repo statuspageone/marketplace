@@ -2,30 +2,28 @@ events:
   - sourceEvent: appdynamics.event.open
     fieldMappings:
       provider: { literal: appdynamics }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: event_type }
       status: { literal: open }
       severity: { literal: high }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: policy_name }
+      description: { sourcePath: event_summary }
       resource_type: { literal: event }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_id: { sourcePath: event_id }
+      resource_name: { sourcePath: affected_entity_name }
+      service_name: { sourcePath: app_name }
+      source_url: { sourcePath: deep_link_url }
+      occurred_at: { sourcePath: event_time }
   - sourceEvent: appdynamics.event.resolved
     fieldMappings:
       provider: { literal: appdynamics }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: event_type }
       status: { literal: resolved }
       severity: { literal: info }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: policy_name }
+      description: { sourcePath: event_summary }
       resource_type: { literal: event }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_id: { sourcePath: event_id }
+      resource_name: { sourcePath: affected_entity_name }
+      service_name: { sourcePath: app_name }
+      source_url: { sourcePath: deep_link_url }
+      occurred_at: { sourcePath: event_time }
