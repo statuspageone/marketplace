@@ -1,7 +1,7 @@
 {
-  "type": "grafana.alert.firing",
+  "type": "grafana.alert.resolved",
   "receiver": "statuspageone",
-  "status": "firing",
+  "status": "resolved",
   "orgId": 1,
   "commonLabels": {
     "alertname": "High CPU",
@@ -9,16 +9,15 @@
     "env": "production"
   },
   "commonAnnotations": {
-    "description": "CPU above 90% for 5 minutes",
-    "summary": "High CPU on api hosts"
+    "description": "CPU is back below threshold"
   },
   "alerts": [
     {
-      "status": "firing",
+      "status": "resolved",
       "labels": { "alertname": "High CPU", "instance": "api-host-01:9100", "service": "api", "env": "production" },
-      "annotations": { "description": "CPU above 90% for 5 minutes" },
+      "annotations": { "description": "CPU is back below threshold" },
       "startsAt": "2026-04-24T12:00:00Z",
-      "endsAt": "0001-01-01T00:00:00Z",
+      "endsAt": "2026-04-24T12:30:00Z",
       "generatorURL": "http://grafana.example.com/alerting/grafana/AbCdEfGh/view",
       "fingerprint": "abc123def456"
     }

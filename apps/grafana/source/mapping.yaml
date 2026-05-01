@@ -2,30 +2,28 @@ events:
   - sourceEvent: grafana.alert.firing
     fieldMappings:
       provider: { literal: grafana }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: status }
       status: { literal: open }
       severity: { literal: high }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: commonLabels.alertname }
+      description: { sourcePath: commonAnnotations.description }
       resource_type: { literal: alert }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_name: { sourcePath: commonLabels.alertname }
+      service_name: { sourcePath: commonLabels.service }
+      environment: { sourcePath: commonLabels.env }
+      source_url: { sourcePath: externalURL }
+      occurred_at: { sourcePath: alerts.0.startsAt }
   - sourceEvent: grafana.alert.resolved
     fieldMappings:
       provider: { literal: grafana }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: status }
       status: { literal: resolved }
       severity: { literal: info }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: commonLabels.alertname }
+      description: { sourcePath: commonAnnotations.description }
       resource_type: { literal: alert }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_name: { sourcePath: commonLabels.alertname }
+      service_name: { sourcePath: commonLabels.service }
+      environment: { sourcePath: commonLabels.env }
+      source_url: { sourcePath: externalURL }
+      occurred_at: { sourcePath: alerts.0.startsAt }
