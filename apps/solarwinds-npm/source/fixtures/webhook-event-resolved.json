@@ -1,10 +1,10 @@
 {
-  "type": "solarwinds-npm.alert.open",
+  "type": "solarwinds-npm.alert.resolved",
   "AlertName": "High CPU Usage",
   "AlertSeverity": "Critical",
-  "AlertMessage": "CPU utilization on server1 is 95% above the 90% threshold",
+  "AlertMessage": "CPU utilization on server1 has returned to normal",
   "AlertTriggerTime": "2026-04-24T12:00:00",
-  "AlertResetTime": "",
+  "AlertResetTime": "2026-04-24T12:30:00",
   "NetworkObjectName": "server1.example.com",
   "NetworkObjectType": "Node",
   "AlertUrl": "http://solarwinds-npm.example.com/Orion/NetPerfMon/Alerts.aspx?alertId=redacted-alert-id"

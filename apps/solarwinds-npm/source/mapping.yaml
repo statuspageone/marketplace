@@ -2,30 +2,24 @@ events:
   - sourceEvent: solarwinds-npm.alert.open
     fieldMappings:
       provider: { literal: solarwinds-npm }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: AlertSeverity }
       status: { literal: open }
       severity: { literal: high }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: AlertName }
+      description: { sourcePath: AlertMessage }
       resource_type: { literal: alert }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_name: { sourcePath: NetworkObjectName }
+      source_url: { sourcePath: AlertUrl }
+      occurred_at: { sourcePath: AlertTriggerTime }
   - sourceEvent: solarwinds-npm.alert.resolved
     fieldMappings:
       provider: { literal: solarwinds-npm }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: AlertSeverity }
       status: { literal: resolved }
       severity: { literal: info }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: AlertName }
+      description: { sourcePath: AlertMessage }
       resource_type: { literal: alert }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_name: { sourcePath: NetworkObjectName }
+      source_url: { sourcePath: AlertUrl }
+      occurred_at: { sourcePath: AlertResetTime }
