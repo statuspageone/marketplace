@@ -1,11 +1,11 @@
 {
-  "type": "datadog.alert.open",
+  "type": "datadog.alert.resolved",
   "monitor_id": "1234567",
   "monitor_name": "High CPU on api hosts",
-  "description": "CPU is above 90% on api hosts for 5 minutes",
-  "alert_type": "error",
+  "description": "CPU is back below 90% on api hosts",
+  "alert_type": "success",
   "priority": "normal",
   "tags": "env:production,service:api,team:backend",
   "url": "https://app.datadoghq.com/monitors/1234567",
-  "date": "1714900000"
+  "date": "1714900800"
 }

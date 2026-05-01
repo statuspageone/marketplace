@@ -2,30 +2,26 @@ events:
   - sourceEvent: datadog.alert.open
     fieldMappings:
       provider: { literal: datadog }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: alert_type }
       status: { literal: open }
       severity: { literal: high }
-      title: { sourcePath: title }
+      title: { sourcePath: monitor_name }
       description: { sourcePath: description }
       resource_type: { literal: monitor }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_id: { sourcePath: monitor_id }
+      resource_name: { sourcePath: monitor_name }
+      source_url: { sourcePath: url }
+      occurred_at: { sourcePath: date }
   - sourceEvent: datadog.alert.resolved
     fieldMappings:
       provider: { literal: datadog }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: alert_type }
       status: { literal: resolved }
       severity: { literal: info }
-      title: { sourcePath: title }
+      title: { sourcePath: monitor_name }
       description: { sourcePath: description }
       resource_type: { literal: monitor }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_id: { sourcePath: monitor_id }
+      resource_name: { sourcePath: monitor_name }
+      source_url: { sourcePath: url }
+      occurred_at: { sourcePath: date }
