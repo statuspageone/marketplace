@@ -2,30 +2,30 @@ events:
   - sourceEvent: signalfx.detector.open
     fieldMappings:
       provider: { literal: signalfx }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: sf_anomalyState }
       status: { literal: open }
       severity: { literal: high }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: sf_messageTitle }
+      description: { sourcePath: sf_messageBody }
       resource_type: { literal: detector }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_id: { sourcePath: sf_detectorId }
+      resource_name: { sourcePath: sf_detectLabel }
+      service_name: { sourcePath: sf_dimensions.service }
+      environment: { sourcePath: sf_dimensions.env }
+      source_url: { sourcePath: sf_detectorUrl }
+      occurred_at: { sourcePath: sf_timestamp }
   - sourceEvent: signalfx.detector.resolved
     fieldMappings:
       provider: { literal: signalfx }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: sf_anomalyState }
       status: { literal: resolved }
       severity: { literal: info }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: sf_messageTitle }
+      description: { sourcePath: sf_messageBody }
       resource_type: { literal: detector }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_id: { sourcePath: sf_detectorId }
+      resource_name: { sourcePath: sf_detectLabel }
+      service_name: { sourcePath: sf_dimensions.service }
+      environment: { sourcePath: sf_dimensions.env }
+      source_url: { sourcePath: sf_detectorUrl }
+      occurred_at: { sourcePath: sf_timestamp }
