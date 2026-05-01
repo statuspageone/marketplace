@@ -2,30 +2,28 @@ events:
   - sourceEvent: sentry.issue.open
     fieldMappings:
       provider: { literal: sentry }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: action }
       status: { literal: open }
       severity: { literal: high }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: data.issue.title }
+      description: { sourcePath: data.issue.culprit }
       resource_type: { literal: issue }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_id: { sourcePath: data.issue.id }
+      resource_name: { sourcePath: data.issue.shortId }
+      service_name: { sourcePath: data.issue.project.slug }
+      source_url: { sourcePath: data.issue.permalink }
+      occurred_at: { sourcePath: data.issue.lastSeen }
   - sourceEvent: sentry.issue.resolved
     fieldMappings:
       provider: { literal: sentry }
-      provider_event_type: { sourcePath: type }
+      provider_event_type: { sourcePath: action }
       status: { literal: resolved }
       severity: { literal: info }
-      title: { sourcePath: title }
-      description: { sourcePath: description }
+      title: { sourcePath: data.issue.title }
+      description: { sourcePath: data.issue.culprit }
       resource_type: { literal: issue }
-      resource_id: { sourcePath: resource.id }
-      resource_name: { sourcePath: resource.name }
-      service_name: { sourcePath: resource.service }
-      environment: { sourcePath: resource.environment }
-      source_url: { sourcePath: source_url }
-      occurred_at: { sourcePath: occurred_at }
+      resource_id: { sourcePath: data.issue.id }
+      resource_name: { sourcePath: data.issue.shortId }
+      service_name: { sourcePath: data.issue.project.slug }
+      source_url: { sourcePath: data.issue.permalink }
+      occurred_at: { sourcePath: data.issue.lastSeen }

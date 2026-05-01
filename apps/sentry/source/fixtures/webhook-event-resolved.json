@@ -1,6 +1,6 @@
 {
-  "type": "sentry.issue.open",
-  "action": "created",
+  "type": "sentry.issue.resolved",
+  "action": "resolved",
   "installation": { "uuid": "redacted-installation-uuid" },
   "data": {
     "issue": {
@@ -8,15 +8,15 @@
       "shortId": "MYPROJECT-ABC",
       "title": "TypeError: Cannot read properties of undefined",
       "culprit": "app/checkout/page.tsx in handleSubmit",
-      "status": "unresolved",
+      "status": "resolved",
       "level": "error",
       "firstSeen": "2026-04-24T12:00:00Z",
-      "lastSeen": "2026-04-24T12:10:00Z",
+      "lastSeen": "2026-04-24T12:30:00Z",
       "count": 47,
       "permalink": "https://sentry.io/organizations/acme/issues/12345/",
       "project": { "id": "1", "name": "checkout-service", "slug": "checkout-service" },
       "metadata": { "type": "TypeError", "value": "Cannot read properties of undefined (reading 'price')" }
     }
   },
-  "actor": { "type": "application", "id": "sentry" }
+  "actor": { "type": "user", "id": "redacted-user-id", "name": "Jane Doe" }
 }
