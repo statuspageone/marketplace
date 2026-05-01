@@ -26,4 +26,4 @@ events:
       service_name: { sourcePath: commonLabels.service }
       environment: { sourcePath: commonLabels.env }
       source_url: { sourcePath: externalURL }
-      occurred_at: { sourcePath: alerts.0.startsAt }
+      occurred_at: { sourcePath: alerts.0.endsAt }
