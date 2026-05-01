@@ -1,6 +1,6 @@
 slug: sentry
 name: Sentry
-icon: https://sentry.io/favicon.ico
+icon: https://cdn.brandfetch.io/idag_928SW/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1667562541208
 description: Webhook-first source app for Sentry issue and metric alert notifications.
 documentationUrl: https://docs.sentry.io/product/integrations/notification-incidents/webhooks/
 version: 1.0.0

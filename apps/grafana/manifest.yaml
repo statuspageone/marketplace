@@ -1,6 +1,6 @@
 slug: grafana
 name: Grafana
-icon: https://grafana.com/favicon.ico
+icon: https://icon.icepanel.io/Technology/svg/Grafana.svg
 description: Webhook-first source app for Grafana alert notifications.
 documentationUrl: https://grafana.com/docs/grafana/latest/alerting/configure-notifications/manage-contact-points/integrations/configure-webhook-notifier/
 version: 1.0.0

@@ -1,6 +1,6 @@
 slug: newrelic
 name: New Relic
-icon: https://newrelic.com/favicon.ico
+icon: https://newrelic.com/themes/custom/erno/assets/images/metadata/apple-touch-icon.png
 description: Webhook-first source app for New Relic incident notifications.
 documentationUrl: https://docs.newrelic.com/docs/alerts/get-notified/webhooks/
 version: 1.0.0

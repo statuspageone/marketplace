@@ -1,6 +1,6 @@
 slug: appdynamics
 name: AppDynamics
-icon: https://docs.appdynamics.com/favicon.ico
+icon: https://www.splunk.com/content/dam/splunk2/images/icons/favicons/favicon-196x196.png
 description: Webhook-first source app for AppDynamics event notifications.
 documentationUrl: https://docs.appdynamics.com/
 version: 1.0.0
